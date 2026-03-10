@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NCMP Uganda Design System
+   Colors: Black, Yellow (Gold), Red, White – Uganda National Colors
+   All colors MUST be HSL.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Uganda national colors */
+    --background: 220 20% 6%;
+    --foreground: 48 100% 96%;
+
+    --card: 220 20% 9%;
+    --card-foreground: 48 100% 96%;
+
+    --popover: 220 18% 12%;
+    --popover-foreground: 48 100% 96%;
+
+    /* Uganda Gold/Yellow */
+    --primary: 45 100% 51%;
+    --primary-foreground: 0 0% 0%;
+
+    /* Uganda Red */
+    --secondary: 3 90% 45%;
+    --secondary-foreground: 48 100% 96%;
+
+    /* Muted */
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 10% 60%;
+
+    /* Gold accent */
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 48 100% 96%;
+
+    --border: 220 15% 18%;
+    --input: 220 15% 14%;
+    --ring: 45 100% 51%;
+
+    --radius: 0.5rem;
+
+    /* Custom NCMP tokens */
+    --uganda-black: 0 0% 4%;
+    --uganda-gold: 45 100% 51%;
+    --uganda-red: 3 90% 45%;
+    --uganda-white: 0 0% 97%;
+    --ugandan-green: 142 60% 25%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 4%) 0%, hsl(220 20% 8%) 40%, hsl(45 60% 10%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(45 100% 51%), hsl(38 100% 45%));
+    --gradient-flag: linear-gradient(180deg, hsl(0 0% 4%) 33.3%, hsl(45 100% 51%) 33.3% 66.6%, hsl(3 90% 45%) 66.6%);
+    --gradient-card: linear-gradient(145deg, hsl(220 20% 11%), hsl(220 18% 8%));
+    --gradient-footer: linear-gradient(180deg, hsl(220 20% 6%), hsl(0 0% 0%));
+
+    --shadow-gold: 0 0 30px hsl(45 100% 51% / 0.25);
+    --shadow-red: 0 0 20px hsl(3 90% 45% / 0.3);
+    --shadow-elegant: 0 8px 32px hsl(0 0% 0% / 0.5);
+
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+
+    --sidebar-background: 220 20% 7%;
+    --sidebar-foreground: 48 100% 90%;
+    --sidebar-primary: 45 100% 51%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 220 15% 14%;
+    --sidebar-accent-foreground: 48 100% 90%;
+    --sidebar-border: 220 15% 15%;
+    --sidebar-ring: 45 100% 51%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--uganda-gold));
+    border-radius: 3px;
+  }
+}
+
+@layer utilities {
+  .text-gold { color: hsl(var(--uganda-gold)); }
+  .text-uganda-red { color: hsl(var(--uganda-red)); }
+  .bg-gold { background-color: hsl(var(--uganda-gold)); }
+  .bg-uganda-red { background-color: hsl(var(--uganda-red)); }
+  .border-gold { border-color: hsl(var(--uganda-gold)); }
+  .border-uganda-red { border-color: hsl(var(--uganda-red)); }
+  .gradient-hero { background: var(--gradient-hero); }
+  .gradient-gold { background: var(--gradient-gold); }
+  .gradient-footer { background: var(--gradient-footer); }
+  .shadow-gold { box-shadow: var(--shadow-gold); }
+  .shadow-red { box-shadow: var(--shadow-red); }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .font-display { font-family: var(--font-display); }
+
+  .ncmp-card {
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+  }
+  .ncmp-card:hover {
+    border-color: hsl(var(--uganda-gold) / 0.4);
+    box-shadow: var(--shadow-gold);
+  }
+
+  .verified-badge {
+    background: var(--gradient-gold);
+    color: hsl(var(--uganda-black));
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .flag-stripe-black { background: hsl(var(--uganda-black)); }
+  .flag-stripe-gold { background: hsl(var(--uganda-gold)); }
+  .flag-stripe-red { background: hsl(var(--uganda-red)); }
+}
