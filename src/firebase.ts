@@ -1,4 +1,3 @@
-// src/firebase.ts
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
@@ -15,7 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-// Request permission & get FCM token
 export const requestFirebaseToken = async (): Promise<string | null> => {
   try {
     const permission = await Notification.requestPermission();
@@ -34,7 +32,6 @@ export const requestFirebaseToken = async (): Promise<string | null> => {
   }
 };
 
-// Listen for foreground notifications
 export const onMessageListener = (callback: (payload: any) => void) => {
   onMessage(messaging, callback);
 };

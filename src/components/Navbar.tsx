@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Bell, MessageSquare, Search, ChevronDown, Shield } from "lucide-react";
+import { Menu, X, Bell, MessageSquare, Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "/assets/ncmp-logo.png";
+
+// Socket & notifications placeholders
+import { initSocket, connectSocket } from "@/services/socket";
+import { requestFirebaseToken } from "@/firebase";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Parliament", href: "/parliament", sub: [
-    { label: "MP Directory", href: "/parliament/mps" },
-    { label: "Committees", href: "/parliament/committees" },
-    { label: "Sessions", href: "/parliament/sessions" },
-  ]},
+  {
+    label: "Parliament",
+    href: "/parliament",
+    sub: [
+      { label: "MP Directory", href: "/parliament/mps" },
+      { label: "Committees", href: "/parliament/committees" },
+      { label: "Sessions", href: "/parliament/sessions" },
+    ],
+  },
   { label: "Constituencies", href: "/constituencies" },
   { label: "Projects", href: "/projects" },
   { label: "Analytics", href: "/analytics" },
@@ -21,6 +30,14 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
+
+  // Initialize socket & Firebase notifications
+  useEffect(() => {
+    const socket = initSocket();
+    connectSocket();
+
+    requestFirebaseToken(); // Request permission for push notifications
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[hsl(var(--uganda-black)/0.95)] backdrop-blur-md border-b border-[hsl(var(--uganda-gold)/0.2)]">
@@ -35,14 +52,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg overflow-hidden flex flex-col">
-              <div className="flex-1 flag-stripe-black" />
-              <div className="flex-1 flag-stripe-gold" />
-              <div className="flex-1 flag-stripe-red" />
-            </div>
-            <div>
+            <img src={logo} alt="NCMP Logo" className="h-10 w-auto rounded-lg" />
+            <div className="flex flex-col">
               <div className="text-gold font-display font-bold text-lg leading-none">NCMP</div>
-              <div className="text-[hsl(var(--muted-foreground))] text-[10px] tracking-widest uppercase">Uganda · 2026</div>
+              <div className="text-[hsl(var(--muted-foreground))] text-[10px] tracking-widest uppercase">
+                Uganda · 2026
+              </div>
             </div>
           </Link>
 
@@ -112,7 +127,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile menu btn */}
+          {/* Mobile menu button */}
           <button
             className="lg:hidden text-foreground hover:text-gold transition-colors"
             onClick={() => setOpen(!open)}
@@ -144,10 +159,14 @@ export default function Navbar() {
               ))}
               <div className="pt-4 flex gap-2 border-t border-border">
                 <Link to="/login" className="flex-1">
-                  <Button variant="outline" className="w-full border-gold text-gold" onClick={() => setOpen(false)}>Sign In</Button>
+                  <Button variant="outline" className="w-full border-gold text-gold" onClick={() => setOpen(false)}>
+                    Sign In
+                  </Button>
                 </Link>
                 <Link to="/register" className="flex-1">
-                  <Button className="w-full bg-gold text-[hsl(var(--uganda-black))] font-semibold" onClick={() => setOpen(false)}>Register</Button>
+                  <Button className="w-full bg-gold text-[hsl(var(--uganda-black))] font-semibold" onClick={() => setOpen(false)}>
+                    Register
+                  </Button>
                 </Link>
               </div>
             </div>
