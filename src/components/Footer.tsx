@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Link } from "react-router-dom";
 import crownedCrane from "@/assets/crowned-crane.png";
-import coatOfArms from "@/assets/uganda-coat-of-arms.png";
+import coatOfArms from "@/assets/ncmp-logo.png";
 
 const footerLinks = {
   "About NCMP": [
