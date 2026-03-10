@@ -3,9 +3,11 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Bell, MessageSquare, Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "/assets/ncmp-logo.png";
 
-// Socket & notifications placeholders
+// Use public folder for assets to avoid Vite import issues
+const logo = "/assets/ncmp-logo.png";
+
+// Socket & Firebase
 import { initSocket, connectSocket } from "@/services/socket";
 import { requestFirebaseToken } from "@/firebase";
 
@@ -31,23 +33,23 @@ export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
 
-  // Initialize socket & Firebase notifications
+  // Initialize backend & notifications
   useEffect(() => {
-    const socket = initSocket();
+    initSocket();
     connectSocket();
-
-    requestFirebaseToken(); // Request permission for push notifications
+    requestFirebaseToken();
   }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[hsl(var(--uganda-black)/0.95)] backdrop-blur-md border-b border-[hsl(var(--uganda-gold)/0.2)]">
-      {/* Top government bar */}
+      {/* Top Government Bar */}
       <div className="bg-[hsl(var(--uganda-red))] py-1 px-4 text-center">
         <span className="text-xs font-semibold tracking-widest text-[hsl(var(--uganda-white))] uppercase">
           🇺🇬 Official Civic Digital Infrastructure — Republic of Uganda
         </span>
       </div>
 
+      {/* Main Nav */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -61,7 +63,7 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop nav */}
+          {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
             {navLinks.map(link => (
               <div
@@ -81,6 +83,7 @@ export default function Navbar() {
                   {link.label}
                   {link.sub && <ChevronDown className="w-3 h-3" />}
                 </Link>
+
                 {link.sub && activeDropdown === link.href && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
@@ -103,7 +106,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right actions */}
+          {/* Right Actions */}
           <div className="hidden lg:flex items-center gap-2">
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-gold">
               <Search className="w-4 h-4" />
@@ -127,7 +130,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile Menu Button */}
           <button
             className="lg:hidden text-foreground hover:text-gold transition-colors"
             onClick={() => setOpen(!open)}
@@ -137,7 +140,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {open && (
           <motion.div
