@@ -1,213 +1,241 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Eye, EyeOff } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff, ArrowRight, Shield, User, Users, Briefcase, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-export default function Register(){
+const roles = [
+  { value: "citizen", label: "Citizen", icon: <User className="w-6 h-6" />, desc: "General public access" },
+  { value: "mp", label: "Member of Parliament", icon: <Users className="w-6 h-6" />, desc: "Parliamentary access" },
+  { value: "official", label: "Government Official", icon: <Briefcase className="w-6 h-6" />, desc: "Executive access" },
+  { value: "staff", label: "Parliamentary Staff", icon: <FileText className="w-6 h-6" />, desc: "Staff access" },
+];
 
-const navigate = useNavigate()
+export default function Register() {
+  const navigate = useNavigate();
+  const [showPwd, setShowPwd] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("citizen");
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    region: "",
+    district: "",
+    constituency: ""
+  });
+  const [loading, setLoading] = useState(false);
 
-const [loading,setLoading] = useState(false)
-const [showPassword,setShowPassword] = useState(false)
-const [terms,setTerms] = useState(false)
+  const shake = { scale: [1, 1.05, 1], rotate: [0, 5, -5, 0], transition: { duration: 0.5 } };
 
-const [form,setForm] = useState({
-firstName:"",
-lastName:"",
-email:"",
-phone:"",
-password:"",
-confirmPassword:"",
-region:"",
-district:"",
-constituency:""
-})
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.firstName || !form.lastName || !form.email || !form.password || !form.confirmPassword) {
+      alert("Please fill all required fields");
+      return;
+    }
 
-const handleChange=(key:string,value:string)=>{
-setForm({...form,[key]:value})
-}
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
 
-const handleRegister=async()=>{
+    setLoading(true);
+    try {
+      const API = import.meta.env.VITE_API_BASE_URL;
+      const res = await fetch(`${API}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, role: selectedRole }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Registration failed");
 
-if(!form.firstName || !form.lastName || !form.email || !form.password){
-alert("Please fill all required fields")
-return
-}
+      alert("Account created successfully");
+      navigate("/login");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-if(form.password !== form.confirmPassword){
-alert("Passwords do not match")
-return
-}
+  return (
+    <div className="min-h-screen bg-black flex">
+      {/* Left Panel: Form */}
+      <div className="flex-1 flex flex-col justify-center px-8 sm:px-16 py-12 max-w-lg mx-auto w-full">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-4 mb-12">
+            <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+              <img src="/ncmp-logo.png" alt="NCMP Logo" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <div className="text-yellow-400 font-display font-bold text-2xl">NCMP Uganda</div>
+              <div className="text-gray-400 text-sm tracking-wider">Official Platform</div>
+            </div>
+          </Link>
 
-if(!terms){
-alert("Accept Terms and Privacy Policy")
-return
-}
+          <h1 className="font-display text-4xl font-bold text-white mb-2">Create Your Account</h1>
+          <p className="text-gray-400 text-lg mb-8">Sign up to access NCMP services</p>
 
-setLoading(true)
+          {/* Role selector */}
+          <div className="mb-8">
+            <Label className="text-gray-400 text-sm uppercase tracking-wider mb-3 block">Account Type</Label>
+            <div className="grid grid-cols-2 gap-4">
+              {roles.map(role => (
+                <motion.button
+                  key={role.value}
+                  type="button"
+                  onClick={() => setSelectedRole(role.value)}
+                  whileHover={shake}
+                  className={`p-5 rounded-lg border text-left transition-all flex flex-col gap-2 ${
+                    selectedRole === role.value
+                      ? "border-yellow-400 bg-yellow-500/10 text-white"
+                      : "border-gray-700 bg-gray-900 text-gray-400 hover:border-yellow-400"
+                  }`}
+                >
+                  {role.icon}
+                  <div className="text-sm font-semibold">{role.label}</div>
+                  <div className="text-xs opacity-70">{role.desc}</div>
+                </motion.button>
+              ))}
+            </div>
+          </div>
 
-try{
+          {/* Registration Form */}
+          <form className="space-y-6" onSubmit={handleRegister}>
+            <div>
+              <Label htmlFor="firstName" className="text-white text-sm font-medium mb-2 block">First Name</Label>
+              <Input
+                id="firstName"
+                placeholder="First Name"
+                className="bg-gray-800 text-white border-gray-700 focus:border-yellow-400"
+                value={form.firstName}
+                onChange={e => setForm({ ...form, firstName: e.target.value })}
+                required
+              />
+            </div>
 
-const API = import.meta.env.VITE_API_BASE_URL
+            <div>
+              <Label htmlFor="lastName" className="text-white text-sm font-medium mb-2 block">Last Name</Label>
+              <Input
+                id="lastName"
+                placeholder="Last Name"
+                className="bg-gray-800 text-white border-gray-700 focus:border-yellow-400"
+                value={form.lastName}
+                onChange={e => setForm({ ...form, lastName: e.target.value })}
+                required
+              />
+            </div>
 
-const response = await fetch(`${API}/auth/register`,{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(form)
-})
+            <div>
+              <Label htmlFor="email" className="text-white text-sm font-medium mb-2 block">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="your.email@example.com"
+                className="bg-gray-800 text-white border-gray-700 focus:border-yellow-400"
+                value={form.email}
+                onChange={e => setForm({ ...form, email: e.target.value })}
+                required
+              />
+            </div>
 
-const text = await response.text()
+            <div>
+              <Label htmlFor="phone" className="text-white text-sm font-medium mb-2 block">Phone</Label>
+              <Input
+                id="phone"
+                placeholder="+256 7XXXXXXXX"
+                className="bg-gray-800 text-white border-gray-700 focus:border-yellow-400"
+                value={form.phone}
+                onChange={e => setForm({ ...form, phone: e.target.value })}
+              />
+            </div>
 
-let data
+            <div>
+              <Label htmlFor="password" className="text-white text-sm font-medium mb-2 block">Password</Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPwd ? "text" : "password"}
+                  placeholder="Enter password"
+                  className="bg-gray-800 text-white border-gray-700 focus:border-yellow-400 pr-12"
+                  value={form.password}
+                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPwd(!showPwd)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-yellow-400 transition-colors"
+                >
+                  {showPwd ? <EyeOff /> : <Eye />}
+                </button>
+              </div>
+            </div>
 
-try{
-data = JSON.parse(text)
-}catch{
-data = {message:text}
-}
+            <div>
+              <Label htmlFor="confirmPassword" className="text-white text-sm font-medium mb-2 block">Confirm Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm password"
+                className="bg-gray-800 text-white border-gray-700 focus:border-yellow-400"
+                value={form.confirmPassword}
+                onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
+                required
+              />
+            </div>
 
-if(!response.ok){
-throw new Error(data.message || "Registration failed")
-}
+            <label className="flex items-center gap-3 cursor-pointer text-gray-300">
+              <input type="checkbox" className="rounded border-gray-700" />
+              I agree to <span className="text-red-500">Terms</span> and <span className="text-yellow-400">Privacy Policy</span>
+            </label>
 
-alert("Account created successfully")
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 hover:from-yellow-500 hover:to-red-700 text-white font-bold h-14 flex items-center justify-center gap-3"
+            >
+              {loading ? "Creating..." : "Create Account"}
+              {!loading && <ArrowRight />}
+            </Button>
+          </form>
 
-navigate("/login")
+          <div className="mt-6 text-center text-lg">
+            <p className="text-gray-400">
+              Already have an account?{" "}
+              <Link to="/login" className="text-yellow-400 hover:text-red-500 font-semibold transition-colors">
+                Login here
+              </Link>
+            </p>
+          </div>
 
-}catch(err:any){
+          {/* Security Notice */}
+          <div className="mt-10 p-4 rounded-lg bg-gray-800 border border-gray-700 flex items-start gap-3">
+            <Shield className="w-6 h-6 text-yellow-400 mt-1 flex-shrink-0" />
+            <p className="text-gray-400 text-base leading-relaxed">
+              This is a secure government platform. Unauthorized access is prohibited under the Uganda Computer Misuse Act.
+            </p>
+          </div>
+        </motion.div>
+      </div>
 
-alert(err.message || "Registration failed")
-
-}
-
-setLoading(false)
-
-}
-
-return(
-
-<div className="min-h-screen flex items-center justify-center bg-gray-100">
-
-<div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
-
-<div className="flex items-center gap-3 mb-6">
-
-<img
-src="/ncmp-logo.png"
-alt="NCMP"
-className="w-10 h-10"
-/>
-
-<h2 className="text-xl font-bold">
-NCMP Uganda
-</h2>
-
-</div>
-
-<h3 className="text-lg font-semibold mb-4">
-Create Account
-</h3>
-
-<input
-placeholder="First Name"
-className="w-full border p-2 mb-3"
-value={form.firstName}
-onChange={(e)=>handleChange("firstName",e.target.value)}
-/>
-
-<input
-placeholder="Last Name"
-className="w-full border p-2 mb-3"
-value={form.lastName}
-onChange={(e)=>handleChange("lastName",e.target.value)}
-/>
-
-<input
-placeholder="Email"
-className="w-full border p-2 mb-3"
-value={form.email}
-onChange={(e)=>handleChange("email",e.target.value)}
-/>
-
-<input
-placeholder="Phone"
-className="w-full border p-2 mb-3"
-value={form.phone}
-onChange={(e)=>handleChange("phone",e.target.value)}
-/>
-
-<div className="relative">
-
-<input
-type={showPassword ? "text":"password"}
-placeholder="Password"
-className="w-full border p-2 mb-3"
-value={form.password}
-onChange={(e)=>handleChange("password",e.target.value)}
-/>
-
-<button
-type="button"
-onClick={()=>setShowPassword(!showPassword)}
-className="absolute right-3 top-3"
->
-
-{showPassword ? <Eye size={18}/> : <EyeOff size={18}/>}
-
-</button>
-
-</div>
-
-<input
-type="password"
-placeholder="Confirm Password"
-className="w-full border p-2 mb-3"
-value={form.confirmPassword}
-onChange={(e)=>handleChange("confirmPassword",e.target.value)}
-/>
-
-<label className="flex gap-2 text-sm mb-4">
-
-<input
-type="checkbox"
-checked={terms}
-onChange={(e)=>setTerms(e.target.checked)}
-/>
-
-I agree to Terms and Privacy Policy
-
-</label>
-
-<button
-onClick={handleRegister}
-disabled={loading}
-className="w-full bg-black text-white p-2 rounded"
->
-
-{loading ? "Creating..." : "Create Account"}
-
-</button>
-
-<div className="mt-4 text-sm text-center">
-
-Already have account?
-
-<Link
-to="/login"
-className="text-blue-600 ml-1"
->
-
-Login
-
-</Link>
-
-</div>
-
-</div>
-
-</div>
-
-)
-
+      {/* Right Panel */}
+      <div className="hidden lg:flex flex-1 flex-col justify-center items-center p-16 relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-center max-w-md">
+          <motion.div whileHover={{ scale: 1.1, rotate: [0, 10, -10, 0] }} className="text-9xl mb-8">🇺🇬</motion.div>
+          <h2 className="font-display text-4xl font-bold text-yellow-400 mb-5">Governance for All Ugandans</h2>
+          <p className="text-gray-400 text-lg leading-relaxed">
+            NCMP connects every citizen with their elected representatives, enabling transparent, accountable, and participatory democracy.
+          </p>
+        </motion.div>
+      </div>
+    </div>
+  );
 }
