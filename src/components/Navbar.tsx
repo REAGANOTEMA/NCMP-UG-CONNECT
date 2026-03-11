@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Bell, MessageSquare, Search, ChevronDown } from "lucide-react";
-import { Button } from "@/assets/ncmp-logo.png";
+import { Button } from "@/components/ui/button"; // ✅ Correct import for your Button component
 
-// Use public folder for assets to avoid Vite import issues
-const logo = "/assets/ncmp-logo.png";
+// Logo from public folder
+const logo = "/ncmp-logo.png"; // Put ncmp-logo.png in your public folder
 
 // Socket & Firebase
 import { initSocket, connectSocket } from "@/services/socket";
