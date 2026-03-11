@@ -17,6 +17,42 @@ export default function Login() {
   const [showPwd, setShowPwd] = useState(false);
   const [selectedRole, setSelectedRole] = useState("citizen");
   const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+
+  // -----------------------------
+  // Handle login
+  // -----------------------------
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (!form.email || !form.password) return alert("Please fill all fields");
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password,
+          role: selectedRole,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Login failed");
+
+      // Save JWT token locally
+      localStorage.setItem("token", data.token);
+
+      // Redirect user (could also store user info)
+      window.location.href = "/dashboard";
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -54,6 +90,7 @@ export default function Login() {
               {roles.map(role => (
                 <button
                   key={role.value}
+                  type="button"
                   onClick={() => setSelectedRole(role.value)}
                   className={`p-3 rounded-lg border text-left transition-all ${
                     selectedRole === role.value
@@ -70,7 +107,7 @@ export default function Login() {
           </div>
 
           {/* Form */}
-          <div className="space-y-4">
+          <form className="space-y-4" onSubmit={handleLogin}>
             <div>
               <Label htmlFor="email" className="text-foreground text-sm font-medium mb-1.5 block">
                 Email Address
@@ -84,6 +121,7 @@ export default function Login() {
                   className="pl-10 bg-card border-border focus:border-gold"
                   value={form.email}
                   onChange={e => setForm({ ...form, email: e.target.value })}
+                  required
                 />
               </div>
             </div>
@@ -101,6 +139,7 @@ export default function Login() {
                   className="pl-10 pr-10 bg-card border-border focus:border-gold"
                   value={form.password}
                   onChange={e => setForm({ ...form, password: e.target.value })}
+                  required
                 />
                 <button
                   type="button"
@@ -122,11 +161,15 @@ export default function Login() {
               </Link>
             </div>
 
-            <Button className="w-full bg-gold text-[hsl(var(--uganda-black))] hover:bg-[hsl(45_100%_45%)] font-bold text-base h-11 shadow-gold">
-              Sign In to NCMP
-              <ArrowRight className="w-4 h-4 ml-2" />
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gold text-[hsl(var(--uganda-black))] hover:bg-[hsl(45_100%_45%)] font-bold text-base h-11 shadow-gold flex items-center justify-center"
+            >
+              {loading ? "Signing in..." : "Sign In to NCMP"}
+              {!loading && <ArrowRight className="w-4 h-4 ml-2" />}
             </Button>
-          </div>
+          </form>
 
           <div className="mt-6 text-center">
             <p className="text-[hsl(var(--muted-foreground))] text-sm">

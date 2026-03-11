@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Bell, MessageSquare, Search, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/assets/ncmp-logo.png";
 
 // Use public folder for assets to avoid Vite import issues
 const logo = "/assets/ncmp-logo.png";
