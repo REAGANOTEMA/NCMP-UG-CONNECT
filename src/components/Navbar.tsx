@@ -45,7 +45,7 @@ export default function Navbar() {
       {/* Top Government Bar */}
       <div className="bg-[hsl(var(--uganda-red))] py-1 px-4 text-center">
         <span className="text-xs font-semibold tracking-widest text-[hsl(var(--uganda-white))] uppercase">
-          🇺🇬 Official Civic Digital Infrastructure — Republic of Uganda
+          Official Civic Digital Infrastructure, Republic of Uganda
         </span>
       </div>
 
