@@ -24,6 +24,7 @@ import Messages from "./pages/Messages";
 import ReportIssue from "./pages/ReportIssue";
 import ProfileSettings from "./pages/ProfileSettings";
 import Petitions from "./pages/Petitions";
+import MPDashboard from "./pages/MPDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ export default function App() {
               <Route path="/report-issue" element={<ProtectedRoute><ReportIssue /></ProtectedRoute>} />
               <Route path="/profile/settings" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />
               <Route path="/petitions" element={<ProtectedRoute><Petitions /></ProtectedRoute>} />
+              <Route path="/mp/dashboard" element={<ProtectedRoute><MPDashboard /></ProtectedRoute>} />
               
               {/* Public/Semi-Public Routes */}
               <Route path="/parliament" element={<Parliament />} />

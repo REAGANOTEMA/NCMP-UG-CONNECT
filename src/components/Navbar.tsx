@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Bell, MessageSquare, Search, ChevronDown, LogOut, User } from "lucide-react";
+import { Menu, X, Bell, MessageSquare, ChevronDown, LogOut, User, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -15,28 +15,31 @@ import {
 
 const logo = "/ncmp-logo.png";
 
-const navLinks = [
-  { label: "Home", href: "/" },
-  {
-    label: "Parliament",
-    href: "/parliament",
-    sub: [
-      { label: "MP Directory", href: "/parliament/mps" },
-      { label: "Committees", href: "/parliament/committees" },
-      { label: "Sessions", href: "/parliament/sessions" },
-    ],
-  },
-  { label: "Constituencies", href: "/constituencies" },
-  { label: "Projects", href: "/projects" },
-  { label: "Analytics", href: "/analytics" },
-];
-
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
+
+  const isMP = user?.role === 'mp';
+
+  const navLinks = [
+    { label: "Home", href: "/" },
+    ...(isMP ? [{ label: "Command Center", href: "/mp/dashboard", icon: LayoutDashboard }] : []),
+    {
+      label: "Parliament",
+      href: "/parliament",
+      sub: [
+        { label: "MP Directory", href: "/parliament/mps" },
+        { label: "Committees", href: "/parliament/committees" },
+        { label: "Sessions", href: "/parliament/sessions" },
+      ],
+    },
+    { label: "Constituencies", href: "/constituencies" },
+    { label: "Projects", href: "/projects" },
+    { label: "Analytics", href: "/analytics" },
+  ];
 
   const handleLogout = () => {
     logout();
@@ -134,9 +137,15 @@ export default function Navbar() {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">
+                    {isMP && (
+                      <DropdownMenuItem onClick={() => navigate("/mp/dashboard")} className="cursor-pointer">
+                        <LayoutDashboard className="w-4 h-4 mr-2" /> Command Center
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem onClick={() => navigate("/profile/settings")} className="cursor-pointer">
                       <User className="w-4 h-4 mr-2" /> Profile Settings
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-500 focus:text-red-500">
                       <LogOut className="w-4 h-4 mr-2" /> Sign Out
                     </DropdownMenuItem>

@@ -33,7 +33,7 @@ export default function Login() {
   const [selectedRole, setSelectedRole] = useState<typeof roles[number]['value']>("citizen");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const from = (location.state as any)?.from?.pathname || "/feed";
+  const from = (location.state as any)?.from?.pathname;
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -45,14 +45,23 @@ export default function Login() {
     setTimeout(() => {
       login({
         firstName: data.email.split('@')[0],
-        lastName: "User",
+        lastName: selectedRole === 'mp' ? "MP" : "User",
         email: data.email,
         role: selectedRole,
+        constituency: selectedRole === 'mp' ? "Kampala Central" : undefined,
       });
+      
       toast.success("Authentication Successful", {
         description: `Welcome back to the NCMP Platform.`,
       });
-      navigate(from, { replace: true });
+
+      // Redirect logic: MPs go to dashboard, others go to feed or previous page
+      if (selectedRole === 'mp') {
+        navigate("/mp/dashboard", { replace: true });
+      } else {
+        navigate(from || "/feed", { replace: true });
+      }
+      
       setIsSubmitting(false);
     }, 1200);
   };
