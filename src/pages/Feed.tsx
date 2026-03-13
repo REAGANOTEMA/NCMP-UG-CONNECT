@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Image, Video, FileText, Send, TrendingUp, Users, Bell, Plus, Hash } from "lucide-react";
+import { Image, Video, FileText, Send, TrendingUp, Users, Bell, Plus, Hash, Bookmark, Settings, Flag } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PostCard from "@/components/PostCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuth } from "@/context/AuthContext";
 
 const mockPosts = [
   {
@@ -50,92 +51,93 @@ const stories = [
 ];
 
 export default function Feed() {
+  const { user } = useAuth();
   const [postContent, setPostContent] = useState("");
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="pt-24 pb-12 px-4 sm:px-6 max-w-7xl mx-auto grid lg:grid-cols-12 gap-6">
+      
+      <div className="pt-20 pb-12 px-4 max-w-[1400px] mx-auto grid lg:grid-cols-12 gap-6">
         
-        {/* Left Sidebar */}
-        <div className="hidden lg:block lg:col-span-3 space-y-6">
-          <div className="ncmp-card p-6 text-center">
-            <div className="w-20 h-20 rounded-full bg-gold/10 border-2 border-gold mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-gold">
-              U
+        {/* Left Sidebar: Navigation & Profile */}
+        <div className="hidden lg:block lg:col-span-3 space-y-4 sticky top-20 h-fit">
+          <div className="ncmp-card p-4 flex items-center gap-3 hover:bg-gold/5 cursor-pointer transition-colors">
+            <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold font-bold">
+              {user?.firstName[0]}
             </div>
-            <h3 className="font-bold text-foreground">Ugandan Citizen</h3>
-            <p className="text-xs text-muted-foreground mb-4">Kampala District</p>
-            <div className="grid grid-cols-2 gap-2 pt-4 border-t border-border">
-              <div>
-                <p className="text-lg font-bold text-gold">124</p>
-                <p className="text-[10px] text-muted-foreground uppercase">Following</p>
-              </div>
-              <div>
-                <p className="text-lg font-bold text-gold">56</p>
-                <p className="text-[10px] text-muted-foreground uppercase">Issues</p>
-              </div>
-            </div>
+            <span className="font-bold text-sm">{user?.firstName} {user?.lastName}</span>
           </div>
-
-          <div className="ncmp-card p-4">
-            <h4 className="text-xs font-bold text-gold uppercase tracking-widest mb-4 flex items-center gap-2">
-              <Hash className="w-4 h-4" /> Constituency Groups
-            </h4>
-            <ul className="space-y-3">
-              {['Kampala Central Watch', 'Nakawa West Dev', 'Wakiso Citizens', 'Jinja City Forum'].map(group => (
-                <li key={group} className="flex items-center gap-3 text-sm text-foreground hover:text-gold cursor-pointer transition-colors group">
-                  <div className="w-8 h-8 rounded bg-muted flex items-center justify-center text-[10px] font-bold group-hover:bg-gold/20">{group[0]}</div>
-                  <span>{group}</span>
-                </li>
-              ))}
-            </ul>
+          
+          <div className="space-y-1">
+            {[
+              { icon: Users, label: "Constituents", color: "text-blue-500" },
+              { icon: Hash, label: "National Groups", color: "text-gold" },
+              { icon: Bookmark, label: "Saved Issues", color: "text-purple-500" },
+              { icon: Flag, label: "Petitions", color: "text-red-500" },
+              { icon: Settings, label: "Settings", color: "text-gray-400" },
+            ].map((item) => (
+              <button key={item.label} className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors text-sm font-medium">
+                <item.icon className={`w-5 h-5 ${item.color}`} />
+                {item.label}
+              </button>
+            ))}
+          </div>
+          
+          <div className="pt-4 border-t border-border">
+            <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest px-3 mb-2">Your Groups</h4>
+            {['Kampala Central Watch', 'Nakawa West Dev'].map(group => (
+              <button key={group} className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors text-xs">
+                <div className="w-6 h-6 rounded bg-gold/10 flex items-center justify-center text-gold font-bold">{group[0]}</div>
+                {group}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Main Feed */}
+        {/* Main Feed: Stories & Posts */}
         <div className="lg:col-span-6 space-y-6">
-          {/* Stories Bar */}
-          <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+          {/* Stories */}
+          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {stories.map(story => (
-              <div key={story.id} className="flex-shrink-0 flex flex-col items-center gap-1 cursor-pointer">
-                <div className={`w-16 h-16 rounded-full p-1 border-2 ${story.isMe ? 'border-dashed border-muted-foreground' : 'border-gold'} flex items-center justify-center`}>
-                  <Avatar className="w-full h-full">
-                    <AvatarFallback className={story.isMe ? 'bg-muted' : 'bg-gold/10 text-gold font-bold'}>
-                      {story.isMe ? <Plus className="w-6 h-6" /> : story.name[0]}
-                    </AvatarFallback>
-                  </Avatar>
+              <div key={story.id} className="flex-shrink-0 w-28 h-48 rounded-xl relative overflow-hidden cursor-pointer group">
+                <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/80 z-10" />
+                <div className="absolute top-2 left-2 z-20 w-8 h-8 rounded-full border-2 border-gold bg-black flex items-center justify-center text-[10px] font-bold text-gold">
+                  {story.isMe ? <Plus className="w-4 h-4" /> : story.name[0]}
                 </div>
-                <span className="text-[10px] text-muted-foreground font-medium truncate w-16 text-center">{story.name}</span>
+                <span className="absolute bottom-2 left-2 z-20 text-[10px] font-bold text-white truncate w-24">
+                  {story.name}
+                </span>
+                <div className="w-full h-full bg-muted group-hover:scale-110 transition-transform duration-500" />
               </div>
             ))}
           </div>
 
           {/* Create Post */}
-          <div className="ncmp-card p-4 bg-card border-gold/20">
+          <div className="ncmp-card p-4">
             <div className="flex gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-gold/10 flex-shrink-0 flex items-center justify-center font-bold text-gold">U</div>
-              <Textarea 
-                placeholder="What's happening in your constituency?"
-                className="min-h-[100px] bg-muted/50 border-border focus:border-gold resize-none"
-                value={postContent}
-                onChange={(e) => setPostContent(e.target.value)}
-              />
+              <div className="w-10 h-10 rounded-full bg-gold/20 flex-shrink-0 flex items-center justify-center font-bold text-gold">
+                {user?.firstName[0]}
+              </div>
+              <button 
+                onClick={() => setPostContent("")}
+                className="flex-1 bg-muted/50 hover:bg-muted rounded-full px-4 text-left text-muted-foreground text-sm transition-colors"
+              >
+                What's happening in your constituency, {user?.firstName}?
+              </button>
             </div>
             <div className="flex items-center justify-between pt-3 border-t border-border">
-              <div className="flex gap-2">
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-gold gap-2">
-                  <Image className="w-4 h-4" /> <span className="hidden sm:inline">Photo</span>
+              <div className="flex gap-1">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-gold gap-2 rounded-full">
+                  <Image className="w-5 h-5 text-green-500" /> <span className="hidden sm:inline">Photo</span>
                 </Button>
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-gold gap-2">
-                  <Video className="w-4 h-4" /> <span className="hidden sm:inline">Video</span>
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-gold gap-2 rounded-full">
+                  <Video className="w-5 h-5 text-red-500" /> <span className="hidden sm:inline">Video</span>
                 </Button>
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-gold gap-2">
-                  <FileText className="w-4 h-4" /> <span className="hidden sm:inline">Issue</span>
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-gold gap-2 rounded-full">
+                  <FileText className="w-5 h-5 text-gold" /> <span className="hidden sm:inline">Issue</span>
                 </Button>
               </div>
-              <Button className="bg-gold text-black hover:bg-gold/90 font-bold px-6">
-                Post <Send className="w-4 h-4 ml-2" />
-              </Button>
             </div>
           </div>
 
@@ -147,34 +149,40 @@ export default function Feed() {
           </div>
         </div>
 
-        {/* Right Sidebar */}
-        <div className="hidden lg:block lg:col-span-3 space-y-6">
+        {/* Right Sidebar: Trending & Alerts */}
+        <div className="hidden lg:block lg:col-span-3 space-y-4 sticky top-20 h-fit">
           <div className="ncmp-card p-4">
-            <h4 className="text-xs font-bold text-gold uppercase tracking-widest mb-4 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" /> Trending Topics
+            <h4 className="text-sm font-bold text-foreground mb-4 flex items-center justify-between">
+              Trending Topics <TrendingUp className="w-4 h-4 text-gold" />
             </h4>
-            <ul className="space-y-3">
-              {['#Uganda2026', '#NationalBudget', '#Infrastructure', '#HealthCare'].map(tag => (
-                <li key={tag} className="text-sm text-foreground hover:text-gold cursor-pointer transition-colors">
-                  {tag}
-                  <p className="text-[10px] text-muted-foreground">2.4k posts</p>
-                </li>
+            <div className="space-y-4">
+              {[
+                { tag: "#Uganda2026", posts: "12.4k", category: "Politics" },
+                { tag: "#NationalBudget", posts: "8.2k", category: "Economy" },
+                { tag: "#Infrastructure", posts: "5.1k", category: "Development" },
+                { tag: "#HealthCare", posts: "3.9k", category: "Social" },
+              ].map(item => (
+                <div key={item.tag} className="group cursor-pointer">
+                  <p className="text-[10px] text-muted-foreground uppercase font-bold">{item.category} · Trending</p>
+                  <p className="text-sm font-bold text-foreground group-hover:text-gold transition-colors">{item.tag}</p>
+                  <p className="text-[10px] text-muted-foreground">{item.posts} posts</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
           <div className="ncmp-card p-4">
-            <h4 className="text-xs font-bold text-gold uppercase tracking-widest mb-4 flex items-center gap-2">
-              <Bell className="w-4 h-4" /> National Alerts
+            <h4 className="text-sm font-bold text-foreground mb-4 flex items-center justify-between">
+              National Alerts <Bell className="w-4 h-4 text-gold" />
             </h4>
             <div className="space-y-3">
-              <div className="p-2 rounded bg-red-500/10 border border-red-500/20">
-                <p className="text-[10px] font-bold text-red-500 uppercase">Emergency</p>
-                <p className="text-xs text-foreground">Heavy rains expected in Elgon region. Stay alert.</p>
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                <p className="text-[10px] font-bold text-red-500 uppercase mb-1">Emergency</p>
+                <p className="text-xs text-foreground leading-relaxed">Heavy rains expected in Elgon region. Stay alert.</p>
               </div>
-              <div className="p-2 rounded bg-gold/10 border border-gold/20">
-                <p className="text-[10px] font-bold text-gold uppercase">Parliament</p>
-                <p className="text-xs text-foreground">Live session: National Budget 2026/27 debate.</p>
+              <div className="p-3 rounded-lg bg-gold/10 border border-gold/20">
+                <p className="text-[10px] font-bold text-gold uppercase mb-1">Parliament</p>
+                <p className="text-xs text-foreground leading-relaxed">Live session: National Budget 2026/27 debate.</p>
               </div>
             </div>
           </div>
