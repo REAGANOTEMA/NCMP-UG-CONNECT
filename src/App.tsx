@@ -22,6 +22,7 @@ import Analytics from "./pages/Analytics";
 import About from "./pages/About";
 import Messages from "./pages/Messages";
 import ReportIssue from "./pages/ReportIssue";
+import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="/feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
               <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
               <Route path="/report-issue" element={<ProtectedRoute><ReportIssue /></ProtectedRoute>} />
+              <Route path="/profile/settings" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />
               
               {/* Public/Semi-Public Routes */}
               <Route path="/parliament" element={<Parliament />} />

@@ -28,6 +28,7 @@ export interface MP {
   term: "2021-2026";
   verified: boolean;
   bio?: string;
+  coverImage?: string;
 }
 
 export type Region = "Central" | "Eastern" | "Northern" | "Western" | "Southwestern";
@@ -98,55 +99,37 @@ export const nationalOfficials: NationalOfficial[] = [
 ];
 
 export const allMPs: MP[] = [
-  // KAMPALA
+  // CENTRAL REGION
   { id: "mp-kla-01", name: "Muhammad Nsereko", constituency: "Kampala Central", district: "Kampala", region: "Central", party: "Independent", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
   { id: "mp-kla-02", name: "Shamim Malende", constituency: "Kampala Woman Representative", district: "Kampala", region: "Central", party: "NUP", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
-  { id: "mp-kla-03", name: "Aloysius Mukasa", constituency: "Rubaga South", district: "Kampala", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  { id: "mp-kla-04", name: "Abubaker Kawalya", constituency: "Rubaga North", district: "Kampala", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  { id: "mp-kla-05", name: "Ronald Balimwezo", constituency: "Nakawa East", district: "Kampala", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
   { id: "mp-kla-06", name: "Joel Ssenyonyi", constituency: "Nakawa West", district: "Kampala", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // WAKISO
-  { id: "mp-wak-01", name: "Betty Ethel Naluyima", constituency: "Wakiso Woman Representative", district: "Wakiso", region: "Central", party: "NUP", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
   { id: "mp-wak-02", name: "Ibrahim Ssemujju Nganda", constituency: "Kira Municipality", district: "Wakiso", region: "Central", party: "FDC", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  { id: "mp-wak-03", name: "Medard Sseggona", constituency: "Busiro East", district: "Wakiso", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  { id: "mp-wak-04", name: "Matia Lwanga Bwanika", constituency: "Busiro North", district: "Wakiso", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // MUKONO
   { id: "mp-muk-01", name: "Betty Nambooze", constituency: "Mukono Municipality", district: "Mukono", region: "Central", party: "NUP", gender: "Female", type: "Directly Elected", term: "2021-2026", verified: true },
-  { id: "mp-muk-02", name: "Abdullah Kiwanuka", constituency: "Mukono North", district: "Mukono", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // JINJA
-  { id: "mp-jin-01", name: "Manjeri Kyebakutika", constituency: "Jinja City Woman", district: "Jinja", region: "Eastern", party: "NUP", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
-  { id: "mp-jin-02", name: "Timothy Lusala Batuwa", constituency: "Jinja West", district: "Jinja", region: "Eastern", party: "FDC", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // MBALE
-  { id: "mp-mba-01", name: "Connie Nakayenze Galiwango", constituency: "Mbale City Woman", district: "Mbale", region: "Eastern", party: "Independent", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
-  { id: "mp-mba-02", name: "Seth Wambede", constituency: "Northern Division", district: "Mbale", region: "Eastern", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // GULU
-  { id: "mp-gul-01", name: "Betty Aol Ocan", constituency: "Gulu City Woman", district: "Gulu", region: "Northern", party: "FDC", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
-  { id: "mp-gul-02", name: "Ojara Martin Mapenduzi", constituency: "Bardege-Layibi Division", district: "Gulu", region: "Northern", party: "Independent", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // MBARARA
-  { id: "mp-mbr-01", name: "Rita Atukwasa", constituency: "Mbarara City Woman", district: "Mbarara", region: "Western", party: "Independent", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
-  { id: "mp-mbr-02", name: "Mwine Mpaka", constituency: "Mbarara City South", district: "Mbarara", region: "Western", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // ARUA
-  { id: "mp-aru-01", name: "Mourine Osoru", constituency: "Arua City Woman", district: "Arua", region: "Northern", party: "NRM", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
-  { id: "mp-aru-02", name: "Jackson Atima", constituency: "Arua Central Division", district: "Arua", region: "Northern", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  
-  // UPDF
-  { id: "mp-updf-01", name: "Gen. David Muhoozi", constituency: "UPDF Representative", district: "National", region: "Central", party: "UPDF", gender: "Male", type: "UPDF", term: "2021-2026", verified: true },
-  { id: "mp-updf-02", name: "Lt. Gen. James Mugira", constituency: "UPDF Representative", district: "National", region: "Central", party: "UPDF", gender: "Male", type: "UPDF", term: "2021-2026", verified: true },
-
-  // ADDITIONAL DISTRICTS (Expanding to be exhaustive)
   { id: "mp-mas-01", name: "Abed Bwanika", constituency: "Kimaanya-Kabungo", district: "Masaka", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  { id: "mp-mas-02", name: "Juliet Kakande", constituency: "Masaka City Woman", district: "Masaka", region: "Central", party: "NUP", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
-  { id: "mp-sor-01", name: "Herbert Ariko", constituency: "Soroti East", district: "Soroti", region: "Eastern", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
+  
+  // EASTERN REGION
+  { id: "mp-jin-02", name: "Timothy Lusala Batuwa", constituency: "Jinja West", district: "Jinja", region: "Eastern", party: "FDC", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
+  { id: "mp-mba-01", name: "Connie Nakayenze Galiwango", constituency: "Mbale City Woman", district: "Mbale", region: "Eastern", party: "Independent", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
   { id: "mp-sor-02", name: "Anna Adeke Ebaju", constituency: "Soroti Woman Representative", district: "Soroti", region: "Eastern", party: "FDC", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  { id: "mp-tor-01", name: "Sarah Opendi", constituency: "Tororo Woman Representative", district: "Tororo", region: "Eastern", party: "NRM", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  
+  // NORTHERN REGION
+  { id: "mp-gul-01", name: "Betty Aol Ocan", constituency: "Gulu City Woman", district: "Gulu", region: "Northern", party: "FDC", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  { id: "mp-aru-02", name: "Jackson Atima", constituency: "Arua Central Division", district: "Arua", region: "Northern", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
+  { id: "mp-lir-01", name: "Judith Alyek", constituency: "Kole Woman Representative", district: "Lira", region: "Northern", party: "NRM", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  
+  // WESTERN REGION
+  { id: "mp-mbr-02", name: "Mwine Mpaka", constituency: "Mbarara City South", district: "Mbarara", region: "Western", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
   { id: "mp-for-01", name: "Alex Ruhunda", constituency: "Fort Portal Central", district: "Fort Portal", region: "Western", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
-  { id: "mp-for-02", name: "Irene Linda", constituency: "Fort Portal City Woman", district: "Fort Portal", region: "Western", party: "NRM", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  { id: "mp-kab-01", name: "Catherine Ndamira", constituency: "Kabale Woman Representative", district: "Kabale", region: "Western", party: "NRM", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  
+  // SOUTHWESTERN REGION
+  { id: "mp-kis-01", name: "Sarah Mateke Nyirabashitsi", constituency: "Kisoro Woman Representative", district: "Kisoro", region: "Southwestern", party: "NRM", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  { id: "mp-ntu-01", name: "Naome Kabasharira", constituency: "Rushenyi County", district: "Ntungamo", region: "Southwestern", party: "Independent", gender: "Female", type: "Directly Elected", term: "2021-2026", verified: true },
+
+  // SPECIAL INTEREST GROUPS
+  { id: "mp-updf-01", name: "Gen. David Muhoozi", constituency: "UPDF Representative", district: "National", region: "Central", party: "UPDF", gender: "Male", type: "UPDF", term: "2021-2026", verified: true },
+  { id: "mp-youth-01", name: "Phiona Nyamutoro", constituency: "National Female Youth", district: "National", region: "Central", party: "NRM", gender: "Female", type: "Youth", term: "2021-2026", verified: true },
 ];
 
 export const REGIONS: Region[] = ["Central", "Eastern", "Northern", "Western", "Southwestern"];
