@@ -31,6 +31,19 @@ export interface MP {
   coverImage?: string;
 }
 
+export interface Petition {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  signatures: number;
+  target: number;
+  status: 'Active' | 'Under Review' | 'Presented' | 'Closed';
+  author: string;
+  dateCreated: string;
+  constituency?: string;
+}
+
 export type Region = "Central" | "Eastern" | "Northern" | "Western" | "Southwestern";
 export type Party = "NRM" | "NUP" | "FDC" | "DP" | "UPC" | "JEEMA" | "ANT" | "PPP" | "Independent" | "UPDF";
 
@@ -140,3 +153,41 @@ export const partyStats = Object.keys(PARTIES).map(party => ({
   fullName: PARTIES[party as Party].fullName,
   color: PARTIES[party as Party].color,
 })).filter(p => p.count > 0);
+
+export const mockPetitions: Petition[] = [
+  {
+    id: "pet-001",
+    title: "Improve Drainage Systems in Kampala Central",
+    description: "A formal request to the Ministry of Works to address the recurring flooding issues on Jinja Road and surrounding areas.",
+    category: "Infrastructure",
+    signatures: 12450,
+    target: 20000,
+    status: "Active",
+    author: "John Doe",
+    dateCreated: "2026-01-15",
+    constituency: "Kampala Central"
+  },
+  {
+    id: "pet-002",
+    title: "Increase Funding for Rural Health Centers in Gulu",
+    description: "Petition to Parliament to allocate more funds for medical supplies and staff in Northern Uganda sub-counties.",
+    category: "Health",
+    signatures: 8900,
+    target: 10000,
+    status: "Under Review",
+    author: "Sarah Akello",
+    dateCreated: "2025-12-10",
+    constituency: "Gulu City"
+  },
+  {
+    id: "pet-003",
+    title: "Protect Mabira Forest from Encroachment",
+    description: "National petition to the NEMA and Ministry of Water to enforce stricter boundaries for Mabira Forest.",
+    category: "Environment",
+    signatures: 45000,
+    target: 50000,
+    status: "Presented",
+    author: "Environmental Watch Uganda",
+    dateCreated: "2025-11-20"
+  }
+];
