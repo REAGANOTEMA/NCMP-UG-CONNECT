@@ -90,7 +90,7 @@ export default function Messages() {
               <div>
                 <h3 className="text-foreground font-semibold text-sm">{activeChat.name}</h3>
                 <p className="text-xs text-[hsl(var(--muted-foreground))]">
-                  {activeChat.online ? <span className="text-[hsl(142_60%_45%)]">● Online</span> : "Last seen recently"}
+                  {activeChat.online ? <span className="text-[142_60%_45%]">● Online</span> : "Last seen recently"}
                   {" · "}{activeChat.role}
                 </p>
               </div>
