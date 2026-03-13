@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Image, Video, FileText, Send, TrendingUp, Users, Bell } from "lucide-react";
+import { Image, Video, FileText, Send, TrendingUp, Users, Bell, Plus, Hash } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PostCard from "@/components/PostCard";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const mockPosts = [
   {
@@ -40,6 +41,14 @@ const mockPosts = [
   }
 ];
 
+const stories = [
+  { id: 1, name: "Your Story", isMe: true },
+  { id: 2, name: "Anita Among" },
+  { id: 3, name: "Thomas Tayebwa" },
+  { id: 4, name: "Robinah Nabbanja" },
+  { id: 5, name: "Muhammad Nsereko" },
+];
+
 export default function Feed() {
   const [postContent, setPostContent] = useState("");
 
@@ -48,7 +57,7 @@ export default function Feed() {
       <Navbar />
       <div className="pt-24 pb-12 px-4 sm:px-6 max-w-7xl mx-auto grid lg:grid-cols-12 gap-6">
         
-        {/* Left Sidebar - Profile Summary */}
+        {/* Left Sidebar */}
         <div className="hidden lg:block lg:col-span-3 space-y-6">
           <div className="ncmp-card p-6 text-center">
             <div className="w-20 h-20 rounded-full bg-gold/10 border-2 border-gold mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-gold">
@@ -70,13 +79,13 @@ export default function Feed() {
 
           <div className="ncmp-card p-4">
             <h4 className="text-xs font-bold text-gold uppercase tracking-widest mb-4 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" /> Trending Topics
+              <Hash className="w-4 h-4" /> Constituency Groups
             </h4>
             <ul className="space-y-3">
-              {['#Uganda2026', '#NationalBudget', '#Infrastructure', '#HealthCare'].map(tag => (
-                <li key={tag} className="text-sm text-foreground hover:text-gold cursor-pointer transition-colors">
-                  {tag}
-                  <p className="text-[10px] text-muted-foreground">2.4k posts</p>
+              {['Kampala Central Watch', 'Nakawa West Dev', 'Wakiso Citizens', 'Jinja City Forum'].map(group => (
+                <li key={group} className="flex items-center gap-3 text-sm text-foreground hover:text-gold cursor-pointer transition-colors group">
+                  <div className="w-8 h-8 rounded bg-muted flex items-center justify-center text-[10px] font-bold group-hover:bg-gold/20">{group[0]}</div>
+                  <span>{group}</span>
                 </li>
               ))}
             </ul>
@@ -85,6 +94,22 @@ export default function Feed() {
 
         {/* Main Feed */}
         <div className="lg:col-span-6 space-y-6">
+          {/* Stories Bar */}
+          <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+            {stories.map(story => (
+              <div key={story.id} className="flex-shrink-0 flex flex-col items-center gap-1 cursor-pointer">
+                <div className={`w-16 h-16 rounded-full p-1 border-2 ${story.isMe ? 'border-dashed border-muted-foreground' : 'border-gold'} flex items-center justify-center`}>
+                  <Avatar className="w-full h-full">
+                    <AvatarFallback className={story.isMe ? 'bg-muted' : 'bg-gold/10 text-gold font-bold'}>
+                      {story.isMe ? <Plus className="w-6 h-6" /> : story.name[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                <span className="text-[10px] text-muted-foreground font-medium truncate w-16 text-center">{story.name}</span>
+              </div>
+            ))}
+          </div>
+
           {/* Create Post */}
           <div className="ncmp-card p-4 bg-card border-gold/20">
             <div className="flex gap-3 mb-4">
@@ -122,23 +147,20 @@ export default function Feed() {
           </div>
         </div>
 
-        {/* Right Sidebar - Suggestions & Activity */}
+        {/* Right Sidebar */}
         <div className="hidden lg:block lg:col-span-3 space-y-6">
           <div className="ncmp-card p-4">
             <h4 className="text-xs font-bold text-gold uppercase tracking-widest mb-4 flex items-center gap-2">
-              <Users className="w-4 h-4" /> Suggested Leaders
+              <TrendingUp className="w-4 h-4" /> Trending Topics
             </h4>
-            <div className="space-y-4">
-              {['Anita Among', 'Thomas Tayebwa', 'Robinah Nabbanja'].map(name => (
-                <div key={name} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-xs font-bold text-gold">{name[0]}</div>
-                    <span className="text-xs font-medium text-foreground">{name}</span>
-                  </div>
-                  <Button variant="outline" size="sm" className="h-7 text-[10px] border-gold/30 text-gold hover:bg-gold/10">Follow</Button>
-                </div>
+            <ul className="space-y-3">
+              {['#Uganda2026', '#NationalBudget', '#Infrastructure', '#HealthCare'].map(tag => (
+                <li key={tag} className="text-sm text-foreground hover:text-gold cursor-pointer transition-colors">
+                  {tag}
+                  <p className="text-[10px] text-muted-foreground">2.4k posts</p>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
           <div className="ncmp-card p-4">

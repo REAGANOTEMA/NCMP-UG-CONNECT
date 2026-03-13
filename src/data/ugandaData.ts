@@ -13,7 +13,7 @@ export interface NationalOfficial {
   district: string;
   verified: boolean;
   bio: string;
-  contactRestricted: boolean; // Only top officials can contact
+  contactRestricted: boolean; 
 }
 
 export interface MP {
@@ -139,6 +139,14 @@ export const allMPs: MP[] = [
   // UPDF
   { id: "mp-updf-01", name: "Gen. David Muhoozi", constituency: "UPDF Representative", district: "National", region: "Central", party: "UPDF", gender: "Male", type: "UPDF", term: "2021-2026", verified: true },
   { id: "mp-updf-02", name: "Lt. Gen. James Mugira", constituency: "UPDF Representative", district: "National", region: "Central", party: "UPDF", gender: "Male", type: "UPDF", term: "2021-2026", verified: true },
+
+  // ADDITIONAL DISTRICTS (Expanding to be exhaustive)
+  { id: "mp-mas-01", name: "Abed Bwanika", constituency: "Kimaanya-Kabungo", district: "Masaka", region: "Central", party: "NUP", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
+  { id: "mp-mas-02", name: "Juliet Kakande", constituency: "Masaka City Woman", district: "Masaka", region: "Central", party: "NUP", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  { id: "mp-sor-01", name: "Herbert Ariko", constituency: "Soroti East", district: "Soroti", region: "Eastern", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
+  { id: "mp-sor-02", name: "Anna Adeke Ebaju", constituency: "Soroti Woman Representative", district: "Soroti", region: "Eastern", party: "FDC", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
+  { id: "mp-for-01", name: "Alex Ruhunda", constituency: "Fort Portal Central", district: "Fort Portal", region: "Western", party: "NRM", gender: "Male", type: "Directly Elected", term: "2021-2026", verified: true },
+  { id: "mp-for-02", name: "Irene Linda", constituency: "Fort Portal City Woman", district: "Fort Portal", region: "Western", party: "NRM", gender: "Female", type: "Woman Representative", term: "2021-2026", verified: true },
 ];
 
 export const REGIONS: Region[] = ["Central", "Eastern", "Northern", "Western", "Southwestern"];
