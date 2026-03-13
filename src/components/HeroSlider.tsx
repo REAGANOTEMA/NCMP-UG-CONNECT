@@ -1,16 +1,23 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const slides = [
   {
-    image: "/parliament2.jpg",
+    image: "https://images.unsplash.com/photo-1526470498-9ae73c66a992?q=80&w=2070",
     title: "National Authority",
     subtitle: "The heart of Ugandan legislation and governance."
   },
   {
-    image: "/ugandanparliament1.jpg",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070",
     title: "Civic Infrastructure",
     subtitle: "Connecting citizens to the Republic's leadership."
+  },
+  {
+    image: "https://images.unsplash.com/photo-1577985043696-8bd54d9f09b7?q=80&w=2070",
+    title: "Digital Sovereignty",
+    subtitle: "Building a transparent and accountable future for all Ugandans."
   }
 ];
 
@@ -40,7 +47,7 @@ export default function HeroSlider() {
             style={{ backgroundImage: `url(${slides[current].image})` }}
           />
           {/* Professional Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-background" />
         </motion.div>
       </AnimatePresence>
       
