@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Shield, Eye, EyeOff, ArrowRight, Lock, Mail, User, Users, Briefcase, FileText, Loader2 } from "lucide-react";
+import { Shield, Eye, EyeOff, ArrowRight, Lock, Mail, User, Users, Briefcase, FileText, Loader2, Award } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -21,8 +21,8 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const roles = [
   { value: "citizen", label: "Citizen", icon: <User className="w-5 h-5" />, desc: "Public Access" },
   { value: "mp", label: "MP", icon: <Users className="w-5 h-5" />, desc: "Parliamentary" },
-  { value: "official", label: "Official", icon: <Briefcase className="w-5 h-5" />, desc: "Executive" },
-  { value: "staff", label: "Staff", icon: <FileText className="w-5 h-5" />, desc: "Administrative" },
+  { value: "speaker", label: "Speaker", icon: <Award className="w-5 h-5" />, desc: "National Oversight" },
+  { value: "clerk", label: "Clerk", icon: <FileText className="w-5 h-5" />, desc: "Administration" },
 ] as const;
 
 export default function Login() {
@@ -41,22 +41,22 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormValues) => {
     setIsSubmitting(true);
-    // Simulate secure authentication
     setTimeout(() => {
       login({
         firstName: data.email.split('@')[0],
-        lastName: selectedRole === 'mp' ? "MP" : "User",
+        lastName: selectedRole.toUpperCase(),
         email: data.email,
         role: selectedRole,
         constituency: selectedRole === 'mp' ? "Kampala Central" : undefined,
       });
       
       toast.success("Authentication Successful", {
-        description: `Welcome back to the NCMP Platform.`,
+        description: `Welcome to the NCMP ${selectedRole} Portal.`,
       });
 
-      // Redirect logic: MPs go to dashboard, others go to feed or previous page
-      if (selectedRole === 'mp') {
+      if (selectedRole === 'speaker' || selectedRole === 'clerk') {
+        navigate("/oversight", { replace: true });
+      } else if (selectedRole === 'mp') {
         navigate("/mp/dashboard", { replace: true });
       } else {
         navigate(from || "/feed", { replace: true });
@@ -173,20 +173,6 @@ export default function Login() {
           <div className="text-7xl mb-6">🇺🇬</div>
           <h2 className="text-4xl font-display font-bold text-white mb-4">National Civic Infrastructure</h2>
           <p className="text-gold/80 text-lg max-w-md">Connecting every Ugandan to the heart of governance through secure, transparent digital channels.</p>
-          <div className="mt-12 flex gap-8">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-white">20M+</div>
-              <div className="text-[10px] text-gold uppercase tracking-widest">Citizens</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-white">529</div>
-              <div className="text-[10px] text-gold uppercase tracking-widest">MPs</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-white">100%</div>
-              <div className="text-[10px] text-gold uppercase tracking-widest">Secure</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -25,6 +25,7 @@ import ReportIssue from "./pages/ReportIssue";
 import ProfileSettings from "./pages/ProfileSettings";
 import Petitions from "./pages/Petitions";
 import MPDashboard from "./pages/MPDashboard";
+import OversightDashboard from "./pages/OversightDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="/profile/settings" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />
               <Route path="/petitions" element={<ProtectedRoute><Petitions /></ProtectedRoute>} />
               <Route path="/mp/dashboard" element={<ProtectedRoute><MPDashboard /></ProtectedRoute>} />
+              <Route path="/oversight" element={<ProtectedRoute><OversightDashboard /></ProtectedRoute>} />
               
               {/* Public/Semi-Public Routes */}
               <Route path="/parliament" element={<Parliament />} />

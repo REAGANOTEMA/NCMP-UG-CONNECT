@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { Role } from "@/data/ugandaData";
 
 interface User {
   firstName: string;
   lastName: string;
   email: string;
-  role: 'citizen' | 'mp' | 'official' | 'staff';
+  role: Role;
   district?: string;
   constituency?: string;
+  id?: string;
 }
 
 interface AuthContextType {
@@ -15,6 +17,7 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   isLoading: boolean;
+  canOversee: boolean; // Speaker or Clerk
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,13 +50,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem("role");
   };
 
+  const canOversee = user?.role === 'speaker' || user?.role === 'clerk';
+
   return (
     <AuthContext.Provider value={{ 
       user, 
       login, 
       logout, 
       isAuthenticated: !!user,
-      isLoading 
+      isLoading,
+      canOversee
     }}>
       {children}
     </AuthContext.Provider>
