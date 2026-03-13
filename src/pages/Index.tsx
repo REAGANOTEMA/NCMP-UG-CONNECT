@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
-  Users, MessageSquare, BarChart3, MapPin, Shield, Zap, 
-  ArrowRight, ChevronRight, Globe, TrendingUp, Radio 
+  Shield, ArrowRight, ChevronRight 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MPProfileCard from "@/components/MPProfileCard";
-import { nationalOfficials, allMPs, partyStats } from "@/data/ugandaData";
+import HeroSlider from "@/components/HeroSlider";
+import { nationalOfficials, allMPs } from "@/data/ugandaData";
 
 export default function Index() {
   const featuredMPs = allMPs.slice(0, 8);
@@ -17,26 +17,15 @@ export default function Index() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* ===== HERO ===== */}
+      {/* ===== HERO SECTION ===== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
-        {/* Real Parliament Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: `url('https://images.unsplash.com/photo-1590603740183-980e7f6920eb?q=80&w=2072')`, // Professional architectural view
-            filter: 'brightness(0.3) contrast(1.1)'
-          }}
-        />
-        
-        {/* Premium Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-background" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.1),transparent_70%)]" />
+        <HeroSlider />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center z-10">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-black/40 backdrop-blur-md mb-8"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/20 bg-black/60 backdrop-blur-md mb-8"
           >
             <Shield className="w-4 h-4 text-gold" />
             <span className="text-gold text-[10px] font-bold tracking-[0.3em] uppercase">
@@ -45,20 +34,19 @@ export default function Index() {
           </motion.div>
 
           <motion.h1 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-display text-6xl sm:text-7xl lg:text-8xl font-bold leading-tight mb-6"
+            className="font-display text-6xl sm:text-7xl lg:text-8xl font-bold leading-tight mb-6 text-white"
           >
-            <span className="text-white drop-shadow-lg">National</span>
-            <br />
-            <span className="text-gold drop-shadow-[0_0_30px_rgba(255,215,0,0.3)]">Constituency</span>
+            National <br />
+            <span className="text-gold">Constituency</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-white/90 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-medium drop-shadow-md"
+            className="text-white/80 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
           >
             Uganda's unified digital governance system — connecting citizens, 
             Parliament, and leadership for a transparent and accountable future.
@@ -71,7 +59,7 @@ export default function Index() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link to="/register">
-              <Button size="lg" className="bg-gold text-black hover:bg-gold/90 font-bold px-10 h-14 text-lg shadow-[0_0_30px_rgba(255,215,0,0.4)]">
+              <Button size="lg" className="bg-gold text-black hover:bg-gold/90 font-bold px-10 h-14 text-lg shadow-lg">
                 Join the Platform <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
@@ -84,7 +72,7 @@ export default function Index() {
         </div>
 
         {/* National Flag Accent */}
-        <div className="absolute bottom-0 left-0 w-full h-1.5 flex">
+        <div className="absolute bottom-0 left-0 w-full h-1.5 flex z-20">
           <div className="flex-1 bg-black" />
           <div className="flex-1 bg-gold" />
           <div className="flex-1 bg-red-600" />
