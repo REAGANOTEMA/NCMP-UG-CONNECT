@@ -4,7 +4,7 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
-  role: string;
+  role: 'citizen' | 'mp' | 'official' | 'staff';
   district?: string;
   constituency?: string;
 }
@@ -14,18 +14,25 @@ interface AuthContextType {
   login: (userData: User) => void;
   logout: () => void;
   isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const savedUser = localStorage.getItem("ncmp_user");
     if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        localStorage.removeItem("ncmp_user");
+      }
     }
+    setIsLoading(false);
   }, []);
 
   const login = (userData: User) => {
@@ -41,7 +48,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout, 
+      isAuthenticated: !!user,
+      isLoading 
+    }}>
       {children}
     </AuthContext.Provider>
   );

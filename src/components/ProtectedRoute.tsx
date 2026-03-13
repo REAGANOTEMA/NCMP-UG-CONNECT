@@ -1,9 +1,21 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Loader2 } from "lucide-react";
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-10 h-10 text-gold animate-spin" />
+          <p className="text-gold text-xs font-bold tracking-widest uppercase">Verifying Credentials...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     // Redirect to login but save the attempted location
