@@ -5,14 +5,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
-// Firebase utilities
-import { requestFirebaseToken, onMessageListener } from "./firebase";
-import { API_BASE_URL } from "./services/api";
-
 // Pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Feed from "./pages/Feed";
 import MPDirectory from "./pages/MPDirectory";
 import Parliament from "./pages/Parliament";
 import Constituencies from "./pages/Constituencies";
@@ -25,36 +22,6 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 export default function App() {
-  useEffect(() => {
-    // 1️⃣ Request notification permission & get FCM token
-    requestFirebaseToken().then((token) => {
-      if (token) {
-        console.log("📩 FCM Token obtained:", token);
-
-        // Send token to backend to save for the logged-in user
-        fetch(`${API_BASE_URL}/notifications/register-token`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token }),
-        })
-          .then((res) => res.json())
-          .then((data) => console.log("✅ Token saved:", data))
-          .catch((err) => console.error("❌ Token save error:", err));
-      }
-    });
-
-    // 2️⃣ Listen for foreground notifications
-    onMessageListener((payload) => {
-      console.log("📩 Foreground message received:", payload);
-
-      const title = payload.notification?.title || "NCMP Notification";
-      const body = payload.notification?.body || "";
-
-      // You can customize how you show notifications
-      alert(`${title}\n${body}`);
-    });
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -65,6 +32,7 @@ export default function App() {
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/feed" element={<Feed />} />
             <Route path="/parliament" element={<Parliament />} />
             <Route path="/parliament/mps" element={<MPDirectory />} />
             <Route path="/constituencies" element={<Constituencies />} />
