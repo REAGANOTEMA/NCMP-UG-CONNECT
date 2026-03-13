@@ -19,10 +19,10 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const roles = [
-  { value: "citizen", label: "Citizen", icon: <User className="w-5 h-5" />, desc: "Public Access" },
-  { value: "mp", label: "MP", icon: <Users className="w-5 h-5" />, desc: "Parliamentary" },
-  { value: "speaker", label: "Speaker", icon: <Award className="w-5 h-5" />, desc: "National Oversight" },
-  { value: "clerk", label: "Clerk", icon: <FileText className="w-5 h-5" />, desc: "Administration" },
+  { value: "citizen", label: "Citizen", icon: "👤", desc: "Public Access" },
+  { value: "mp", label: "MP", icon: "🏛️", desc: "Parliamentary" },
+  { value: "speaker", label: "Speaker", icon: "⚖️", desc: "National Oversight" },
+  { value: "clerk", label: "Clerk", icon: "📝", desc: "Administration" },
 ] as const;
 
 export default function Login() {
@@ -92,7 +92,7 @@ export default function Login() {
                       : "border-border bg-card text-muted-foreground hover:border-gold/30"
                   }`}
                 >
-                  <div className={selectedRole === role.value ? "text-gold" : ""}>{role.icon}</div>
+                  <div className="text-2xl">{role.icon}</div>
                   <div>
                     <div className="text-xs font-bold">{role.label}</div>
                     <div className="text-[9px] opacity-60">{role.desc}</div>

@@ -18,18 +18,25 @@ export default function Index() {
       <Navbar />
 
       {/* ===== HERO ===== */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 bg-black">
-        {/* Premium Background Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.05),transparent_70%)]" />
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-black via-gold to-red-600" />
-        </div>
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24">
+        {/* Real Parliament Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url('https://images.unsplash.com/photo-1590603740183-980e7f6920eb?q=80&w=2072')`, // Professional architectural view
+            filter: 'brightness(0.3) contrast(1.1)'
+          }}
+        />
+        
+        {/* Premium Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.1),transparent_70%)]" />
 
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center z-10">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/20 bg-gold/5 mb-8"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/30 bg-black/40 backdrop-blur-md mb-8"
           >
             <Shield className="w-4 h-4 text-gold" />
             <span className="text-gold text-[10px] font-bold tracking-[0.3em] uppercase">
@@ -42,16 +49,16 @@ export default function Index() {
             animate={{ opacity: 1, y: 0 }}
             className="font-display text-6xl sm:text-7xl lg:text-8xl font-bold leading-tight mb-6"
           >
-            <span className="text-white">National</span>
+            <span className="text-white drop-shadow-lg">National</span>
             <br />
-            <span className="text-gold">Constituency</span>
+            <span className="text-gold drop-shadow-[0_0_30px_rgba(255,215,0,0.3)]">Constituency</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+            className="text-white/90 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-medium drop-shadow-md"
           >
             Uganda's unified digital governance system — connecting citizens, 
             Parliament, and leadership for a transparent and accountable future.
@@ -64,16 +71,26 @@ export default function Index() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <Link to="/register">
-              <Button size="lg" className="bg-gold text-black hover:bg-gold/90 font-bold px-10 h-14 text-lg shadow-[0_0_30px_rgba(255,215,0,0.2)]">
+              <Button size="lg" className="bg-gold text-black hover:bg-gold/90 font-bold px-10 h-14 text-lg shadow-[0_0_30px_rgba(255,215,0,0.4)]">
                 Join the Platform <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/parliament/mps">
-              <Button size="lg" variant="outline" className="border-white/10 text-white hover:border-gold hover:text-gold h-14 px-10 text-lg">
+              <Button size="lg" variant="outline" className="bg-black/20 backdrop-blur-md border-white/20 text-white hover:border-gold hover:text-gold h-14 px-10 text-lg">
                 Explore Directory
               </Button>
             </Link>
           </motion.div>
+        </div>
+
+        {/* National Flag Accent */}
+        <div className="absolute bottom-0 left-0 w-full h-1.5 flex">
+          <div className="flex-1 bg-black" />
+          <div className="flex-1 bg-gold" />
+          <div className="flex-1 bg-red-600" />
+          <div className="flex-1 bg-black" />
+          <div className="flex-1 bg-gold" />
+          <div className="flex-1 bg-red-600" />
         </div>
       </section>
 
