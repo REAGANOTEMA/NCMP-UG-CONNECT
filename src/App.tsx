@@ -24,6 +24,7 @@ import Messages from "./pages/Messages";
 import ReportIssue from "./pages/ReportIssue";
 import ProfileSettings from "./pages/ProfileSettings";
 import Petitions from "./pages/Petitions";
+import TownHall from "./pages/TownHall";
 import MPDashboard from "./pages/MPDashboard";
 import OversightDashboard from "./pages/OversightDashboard";
 import NotFound from "./pages/NotFound";
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="/report-issue" element={<ProtectedRoute><ReportIssue /></ProtectedRoute>} />
               <Route path="/profile/settings" element={<ProtectedRoute><ProfileSettings /></ProtectedRoute>} />
               <Route path="/petitions" element={<ProtectedRoute><Petitions /></ProtectedRoute>} />
+              <Route path="/townhall" element={<ProtectedRoute><TownHall /></ProtectedRoute>} />
               <Route path="/mp/dashboard" element={<ProtectedRoute><MPDashboard /></ProtectedRoute>} />
               <Route path="/oversight" element={<ProtectedRoute><OversightDashboard /></ProtectedRoute>} />
               

@@ -2,7 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   ShieldCheck, MapPin, Users, MessageSquare, Phone, 
-  FileText, Award, TrendingUp, ChevronLeft, Globe 
+  FileText, Award, TrendingUp, ChevronLeft, Globe,
+  Briefcase, Mail, ExternalLink
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -17,6 +18,12 @@ export default function MPProfile() {
   if (!mp) return <div className="pt-32 text-center">MP Not Found</div>;
 
   const partyInfo = PARTIES[mp.party];
+
+  const constituencyTeam = [
+    { name: "Sarah Namukasa", role: "Political Assistant", email: "sarah.n@parliament.go.ug" },
+    { name: "John Okello", role: "Constituency Coordinator", email: "john.o@parliament.go.ug" },
+    { name: "Grace Akello", role: "Public Relations Officer", email: "grace.a@parliament.go.ug" },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -67,24 +74,25 @@ export default function MPProfile() {
             </motion.div>
 
             <div className="ncmp-card p-6">
-              <h3 className="text-sm font-bold text-gold uppercase tracking-widest mb-4">Constituency Stats</h3>
+              <h3 className="text-sm font-bold text-gold uppercase tracking-widest mb-6 flex items-center gap-2">
+                <Briefcase className="w-4 h-4" /> Constituency Team
+              </h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Responsiveness</span>
-                  <span className="text-sm font-bold text-foreground">94%</span>
-                </div>
-                <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
-                  <div className="h-full bg-gold w-[94%]" />
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Issues Resolved</span>
-                  <span className="text-sm font-bold text-foreground">1,240</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-muted-foreground">Projects Active</span>
-                  <span className="text-sm font-bold text-foreground">12</span>
-                </div>
+                {constituencyTeam.map((member) => (
+                  <div key={member.name} className="flex items-center justify-between group">
+                    <div>
+                      <p className="text-xs font-bold text-foreground">{member.name}</p>
+                      <p className="text-[10px] text-muted-foreground uppercase">{member.role}</p>
+                    </div>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-gold">
+                      <Mail className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                ))}
               </div>
+              <Button variant="outline" className="w-full mt-6 border-border text-xs h-8">
+                Contact Office
+              </Button>
             </div>
           </div>
 
@@ -131,8 +139,13 @@ export default function MPProfile() {
             </motion.div>
 
             <div className="ncmp-card p-8">
-              <h2 className="text-xl font-display font-bold text-foreground mb-6 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-gold" /> Recent Legislative Activity
+              <h2 className="text-xl font-display font-bold text-foreground mb-6 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-gold" /> Recent Legislative Activity
+                </div>
+                <Button variant="ghost" className="text-xs text-gold hover:bg-gold/10">
+                  View Hansard <ExternalLink className="w-3 h-3 ml-2" />
+                </Button>
               </h2>
               <div className="space-y-6">
                 {[
@@ -142,10 +155,12 @@ export default function MPProfile() {
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4 items-start">
                     <div className="w-2 h-2 rounded-full bg-gold mt-2" />
-                    <div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-sm font-bold text-foreground">{item.title}</p>
+                        <Badge variant="secondary" className="text-[10px]">{item.status}</Badge>
+                      </div>
                       <p className="text-xs text-muted-foreground">{item.date}</p>
-                      <p className="text-sm font-bold text-foreground">{item.title}</p>
-                      <Badge variant="secondary" className="mt-1 text-[10px]">{item.status}</Badge>
                     </div>
                   </div>
                 ))}

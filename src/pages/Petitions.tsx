@@ -7,12 +7,33 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { mockPetitions } from "@/data/ugandaData";
+import { mockPetitions as initialPetitions } from "@/data/ugandaData";
+import { toast } from "sonner";
 
 export default function Petitions() {
   const [search, setSearch] = useState("");
+  const [petitions, setPetitions] = useState(initialPetitions);
+  const [signedIds, setSignedIds] = useState<string[]>([]);
 
-  const filtered = mockPetitions.filter(p => 
+  const handleSign = (id: string) => {
+    if (signedIds.includes(id)) {
+      toast.error("Already Signed", {
+        description: "You have already appended your digital signature to this petition.",
+      });
+      return;
+    }
+
+    setPetitions(prev => prev.map(p => 
+      p.id === id ? { ...p, signatures: p.signatures + 1 } : p
+    ));
+    setSignedIds(prev => [...prev, id]);
+    
+    toast.success("Petition Signed", {
+      description: "Your signature has been verified and added to the National Registry.",
+    });
+  };
+
+  const filtered = petitions.filter(p => 
     p.title.toLowerCase().includes(search.toLowerCase()) || 
     p.category.toLowerCase().includes(search.toLowerCase())
   );
@@ -76,6 +97,7 @@ export default function Petitions() {
         <div className="grid gap-6">
           {filtered.map((petition, i) => {
             const progress = (petition.signatures / petition.target) * 100;
+            const isSigned = signedIds.includes(petition.id);
             
             return (
               <motion.div
@@ -139,8 +161,20 @@ export default function Petitions() {
                     
                     <Progress value={progress} className="h-2 bg-muted" />
                     
-                    <Button className="w-full bg-gold text-black font-bold group-hover:shadow-lg group-hover:shadow-gold/10 transition-all">
-                      Sign Petition <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button 
+                      onClick={() => handleSign(petition.id)}
+                      disabled={isSigned}
+                      className={`w-full font-bold transition-all ${
+                        isSigned 
+                          ? "bg-green-500/20 text-green-500 border border-green-500/30" 
+                          : "bg-gold text-black hover:bg-gold/90 group-hover:shadow-lg group-hover:shadow-gold/10"
+                      }`}
+                    >
+                      {isSigned ? (
+                        <><CheckCircle2 className="w-4 h-4 mr-2" /> Signed</>
+                      ) : (
+                        <>Sign Petition <ArrowRight className="w-4 h-4 ml-2" /></>
+                      )}
                     </Button>
                   </div>
                 </div>
