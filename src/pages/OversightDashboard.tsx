@@ -4,7 +4,7 @@ import {
   FileText, Bell, Search, Filter, 
   TrendingUp, CheckCircle2, AlertTriangle,
   BarChart3, Globe, Briefcase, ArrowUpRight,
-  ThumbsUp, ThumbsDown, Radio
+  ThumbsUp, ThumbsDown, Radio, Megaphone, ShieldAlert
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -13,10 +13,18 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { allMPs, REGIONS } from "@/data/ugandaData";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 export default function OversightDashboard() {
   const { user } = useAuth();
   const isSpeaker = user?.role === 'speaker';
+
+  const handleEmergencyBroadcast = () => {
+    toast.error("NATIONAL EMERGENCY ALERT TRIGGERED", {
+      description: "Broadcasting to all 20.4M registered citizens...",
+      duration: 5000,
+    });
+  };
 
   const stats = [
     { label: "Total MPs Registered", value: "529", icon: Users, color: "text-gold" },
@@ -34,17 +42,28 @@ export default function OversightDashboard() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
+          className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10"
         >
-          <div className="flex items-center gap-2 text-gold text-xs font-bold tracking-[0.2em] uppercase mb-2">
-            <Shield className="w-4 h-4" /> {isSpeaker ? "Speaker's National Oversight" : "Office of the Clerk – Administration"}
+          <div>
+            <div className="flex items-center gap-2 text-gold text-xs font-bold tracking-[0.2em] uppercase mb-2">
+              <Shield className="w-4 h-4" /> {isSpeaker ? "Speaker's National Oversight" : "Office of the Clerk – Administration"}
+            </div>
+            <h1 className="font-display text-4xl font-bold text-foreground">
+              National Governance Intelligence
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Real-time monitoring of all 529 Members of Parliament and 353 Constituencies.
+            </p>
           </div>
-          <h1 className="font-display text-4xl font-bold text-foreground">
-            National Governance Intelligence
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Real-time monitoring of all 529 Members of Parliament and 353 Constituencies.
-          </p>
+
+          <div className="flex items-center gap-3">
+            <Button 
+              onClick={handleEmergencyBroadcast}
+              className="bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg shadow-red-600/20 gap-2"
+            >
+              <ShieldAlert className="w-4 h-4" /> Emergency Broadcast
+            </Button>
+          </div>
         </motion.div>
 
         {/* National Stats */}
@@ -55,7 +74,7 @@ export default function OversightDashboard() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.1 }}
-              className="ncmp-card p-5"
+              className="ncmp-card p-5 relative overflow-hidden"
             >
               <div className="flex items-center justify-between mb-4">
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
@@ -63,6 +82,13 @@ export default function OversightDashboard() {
               </div>
               <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
               <div className="text-xs text-muted-foreground uppercase tracking-wider">{stat.label}</div>
+              
+              {/* Scanning Effect */}
+              <motion.div 
+                className="absolute inset-0 w-full h-0.5 bg-gold/10 blur-sm"
+                animate={{ top: ["0%", "100%", "0%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              />
             </motion.div>
           ))}
         </div>
@@ -71,7 +97,7 @@ export default function OversightDashboard() {
           {/* Main Content Area */}
           <div className="lg:col-span-8 space-y-6">
             {/* Live Public Pulse Monitor */}
-            <div className="ncmp-card p-6 border-red-600/20 bg-red-600/5">
+            <div className="ncmp-card p-6 border-red-600/20 bg-red-600/5 relative overflow-hidden">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-bold text-foreground flex items-center gap-2">
                   <Radio className="w-4 h-4 text-red-600 animate-pulse" /> Live Public Pulse: Plenary Session
