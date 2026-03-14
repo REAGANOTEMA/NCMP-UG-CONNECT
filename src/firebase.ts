@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {
+  getMessaging,
+  getToken,
+  onMessage,
+  isSupported,
+  Messaging
+} from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,29 +17,61 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+
+let messaging: Messaging | null = null;
+
+// Check if messaging is supported (important for Safari / SSR)
+export const initMessaging = async () => {
+  const supported = await isSupported();
+  if (supported) {
+    messaging = getMessaging(app);
+  } else {
+    console.warn("⚠️ Firebase Messaging not supported in this browser");
+  }
+};
 
 export const requestFirebaseToken = async (): Promise<string | null> => {
   try {
+    if (!messaging) {
+      console.warn("⚠️ Messaging not initialized");
+      return null;
+    }
+
     const permission = await Notification.requestPermission();
-    if (permission === "granted") {
-      const token = await getToken(messaging, {
-        vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-      });
-      console.log("📩 FCM token:", token);
+
+    if (permission !== "granted") {
+      console.warn("⚠️ Notification permission denied");
+      return null;
+    }
+
+    const token = await getToken(messaging, {
+      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+    });
+
+    if (token) {
+      console.log("📩 FCM Token:", token);
       return token;
     }
-    console.warn("⚠️ Notification permission denied");
+
+    console.warn("⚠️ No FCM token received");
     return null;
+
   } catch (error) {
     console.error("❌ Firebase token error:", error);
     return null;
   }
 };
 
+// Foreground notification listener
 export const onMessageListener = (callback: (payload: any) => void) => {
-  onMessage(messaging, callback);
+  if (!messaging) return;
+
+  onMessage(messaging, (payload) => {
+    console.log("📨 Foreground notification:", payload);
+    callback(payload);
+  });
 };
 
 export default app;
