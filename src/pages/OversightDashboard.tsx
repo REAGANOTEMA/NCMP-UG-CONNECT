@@ -3,7 +3,7 @@ import {
   Shield, Users, MapPin, Activity, 
   FileText, Bell, Search, Filter, 
   TrendingUp, CheckCircle2, AlertTriangle,
-  BarChart3, Globe, Briefcase
+  BarChart3, Globe, Briefcase, ArrowUpRight
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -73,14 +73,19 @@ export default function OversightDashboard() {
                 <Globe className="w-4 h-4 text-gold" /> Regional Engagement Heatmap
               </h3>
               <div className="space-y-4">
-                {REGIONS.map(region => (
+                {REGIONS.map((region, i) => (
                   <div key={region}>
                     <div className="flex justify-between text-xs font-bold mb-1.5">
                       <span className="text-foreground">{region} Region</span>
-                      <span className="text-gold">92% Active</span>
+                      <span className="text-gold">{95 - (i * 4)}% Active</span>
                     </div>
                     <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-gold" style={{ width: '92%' }} />
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${95 - (i * 4)}%` }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        className="h-full bg-gold" 
+                      />
                     </div>
                   </div>
                 ))}
@@ -94,7 +99,7 @@ export default function OversightDashboard() {
               </h3>
               <div className="space-y-4">
                 {allMPs.slice(0, 5).map(mp => (
-                  <div key={mp.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
+                  <div key={mp.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border hover:border-gold/20 transition-all">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-xs font-bold text-gold">
                         {mp.name[0]}
@@ -104,7 +109,12 @@ export default function OversightDashboard() {
                         <p className="text-[10px] text-muted-foreground uppercase">{mp.constituency}</p>
                       </div>
                     </div>
-                    <Badge className="bg-green-500/10 text-green-500 border-none">ONLINE</Badge>
+                    <div className="flex items-center gap-3">
+                      <Badge className="bg-green-500/10 text-green-500 border-none">ONLINE</Badge>
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -139,12 +149,12 @@ export default function OversightDashboard() {
             <div className="ncmp-card p-6">
               <h3 className="text-sm font-bold text-gold uppercase tracking-widest mb-6">Quick Oversight</h3>
               <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-20 flex flex-col gap-2 border-border hover:border-gold/30">
-                  <Briefcase className="w-5 h-5 text-gold" />
+                <Button variant="outline" className="h-20 flex flex-col gap-2 border-border hover:border-gold/30 group">
+                  <Briefcase className="w-5 h-5 text-gold group-hover:scale-110 transition-transform" />
                   <span className="text-[9px] uppercase font-bold">All Projects</span>
                 </Button>
-                <Button variant="outline" className="h-20 flex flex-col gap-2 border-border hover:border-gold/30">
-                  <BarChart3 className="w-5 h-5 text-gold" />
+                <Button variant="outline" className="h-20 flex flex-col gap-2 border-border hover:border-gold/30 group">
+                  <BarChart3 className="w-5 h-5 text-gold group-hover:scale-110 transition-transform" />
                   <span className="text-[9px] uppercase font-bold">National Stats</span>
                 </Button>
               </div>

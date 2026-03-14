@@ -4,7 +4,8 @@ import {
   LayoutDashboard, Users, MessageSquare, AlertCircle, 
   TrendingUp, CheckCircle2, Clock, MapPin, 
   FileText, Calendar, Bell, Search, Filter,
-  ArrowUpRight, MoreHorizontal, Briefcase
+  ArrowUpRight, MoreHorizontal, Briefcase, Plus,
+  ExternalLink, Eye
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -26,9 +27,15 @@ export default function MPDashboard() {
   ];
 
   const recentIssues = [
-    { id: "ISS-001", title: "Water Shortage in Ward 4", category: "Utilities", priority: "High", status: "In Progress", time: "2h ago" },
-    { id: "ISS-002", title: "Road Blockage - Jinja Rd", category: "Infrastructure", priority: "Critical", status: "Pending", time: "5h ago" },
-    { id: "ISS-003", title: "Health Center Staffing", category: "Health", priority: "Medium", status: "Resolved", time: "1d ago" },
+    { id: "ISS-001", title: "Water Shortage in Ward 4", category: "Utilities", priority: "High", status: "In Progress", time: "2h ago", reporter: "John D." },
+    { id: "ISS-002", title: "Road Blockage - Jinja Rd", category: "Infrastructure", priority: "Critical", status: "Pending", time: "5h ago", reporter: "Sarah A." },
+    { id: "ISS-003", title: "Health Center Staffing", category: "Health", priority: "Medium", status: "Resolved", time: "1d ago", reporter: "Musa K." },
+  ];
+
+  const constituencyProjects = [
+    { id: 1, name: "Ward 4 Primary School Renovation", progress: 75, budget: "UGX 45M", status: "On Track" },
+    { id: 2, name: "Community Borehole Drilling", progress: 30, budget: "UGX 12M", status: "Delayed" },
+    { id: 3, name: "Market Solar Lighting", progress: 100, budget: "UGX 28M", status: "Completed" },
   ];
 
   return (
@@ -105,7 +112,7 @@ export default function MPDashboard() {
                   <input 
                     type="text" 
                     placeholder="Search records..." 
-                    className="bg-muted/50 border border-border rounded-md pl-9 pr-4 py-1.5 text-sm focus:outline-none focus:border-gold w-64"
+                    className="bg-muted/30 border border-border rounded-md pl-9 pr-4 py-1.5 text-sm focus:outline-none focus:border-gold w-64"
                   />
                 </div>
               </div>
@@ -171,25 +178,72 @@ export default function MPDashboard() {
                 </div>
               </TabsContent>
 
-              <TabsContent value="issues">
-                <div className="ncmp-card p-6 text-center py-20">
-                  <AlertCircle className="w-12 h-12 text-gold/20 mx-auto mb-4" />
-                  <h3 className="text-lg font-bold text-foreground">Issue Management Portal</h3>
-                  <p className="text-muted-foreground text-sm max-w-xs mx-auto mt-2">
-                    Detailed constituent report tracking and resolution workflow.
-                  </p>
-                  <Button className="mt-6 bg-gold text-black font-bold">Open Issue CRM</Button>
+              <TabsContent value="issues" className="space-y-4">
+                <div className="grid gap-4">
+                  {recentIssues.map((issue) => (
+                    <div key={issue.id} className="ncmp-card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-start gap-4">
+                        <div className={`mt-1 w-10 h-10 rounded-lg flex items-center justify-center ${
+                          issue.priority === 'Critical' ? 'bg-red-500/10 text-red-500' : 'bg-gold/10 text-gold'
+                        }`}>
+                          <AlertCircle className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-bold text-foreground">{issue.title}</h4>
+                            <Badge className={issue.priority === 'Critical' ? 'bg-red-500' : 'bg-gold text-black'}>
+                              {issue.priority}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-2">Reported by {issue.reporter} • {issue.time}</p>
+                          <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                            <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> Ward 4</span>
+                            <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> 12 Comments</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" className="border-border text-xs">Assign Staff</Button>
+                        <Button className="bg-gold text-black font-bold text-xs">Resolve</Button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </TabsContent>
 
-              <TabsContent value="projects">
-                <div className="ncmp-card p-6 text-center py-20">
-                  <Briefcase className="w-12 h-12 text-gold/20 mx-auto mb-4" />
-                  <h3 className="text-lg font-bold text-foreground">Project Oversight</h3>
-                  <p className="text-muted-foreground text-sm max-w-xs mx-auto mt-2">
-                    Monitor local development projects and budget allocations.
-                  </p>
-                  <Button className="mt-6 bg-gold text-black font-bold">View Project Map</Button>
+              <TabsContent value="projects" className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {constituencyProjects.map((project) => (
+                    <div key={project.id} className="ncmp-card p-5">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="p-2 rounded bg-gold/10 text-gold">
+                          <Briefcase className="w-5 h-5" />
+                        </div>
+                        <Badge variant="outline" className={project.status === 'Delayed' ? 'border-red-500 text-red-500' : 'border-gold text-gold'}>
+                          {project.status}
+                        </Badge>
+                      </div>
+                      <h4 className="font-bold text-foreground mb-1">{project.name}</h4>
+                      <p className="text-xs text-muted-foreground mb-4">Budget: {project.budget}</p>
+                      
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-[10px] font-bold uppercase">
+                          <span className="text-muted-foreground">Progress</span>
+                          <span className="text-gold">{project.progress}%</span>
+                        </div>
+                        <Progress value={project.progress} className="h-1.5 bg-muted" />
+                      </div>
+                      
+                      <div className="mt-6 flex gap-2">
+                        <Button variant="ghost" size="sm" className="flex-1 text-[10px] font-bold uppercase tracking-widest hover:bg-gold/10">
+                          <FileText className="w-3 h-3 mr-2" /> Reports
+                        </Button>
+                        <Button variant="ghost" size="sm" className="flex-1 text-[10px] font-bold uppercase tracking-widest hover:bg-gold/10">
+                          <Eye className="w-3 h-3 mr-2" /> Details
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </TabsContent>
             </Tabs>
@@ -200,19 +254,19 @@ export default function MPDashboard() {
             <div className="ncmp-card p-6">
               <h3 className="text-sm font-bold text-gold uppercase tracking-widest mb-6">Quick Actions</h3>
               <div className="grid grid-cols-2 gap-3">
-                <button className="p-4 rounded-lg bg-muted hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
+                <button className="p-4 rounded-lg bg-muted/30 hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
                   <MessageSquare className="w-6 h-6 mx-auto mb-2 text-muted-foreground group-hover:text-gold" />
                   <span className="text-[10px] font-bold uppercase text-muted-foreground group-hover:text-foreground">Broadcast</span>
                 </button>
-                <button className="p-4 rounded-lg bg-muted hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
+                <button className="p-4 rounded-lg bg-muted/30 hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
                   <FileText className="w-6 h-6 mx-auto mb-2 text-muted-foreground group-hover:text-gold" />
                   <span className="text-[10px] font-bold uppercase text-muted-foreground group-hover:text-foreground">Hansard</span>
                 </button>
-                <button className="p-4 rounded-lg bg-muted hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
+                <button className="p-4 rounded-lg bg-muted/30 hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
                   <Users className="w-6 h-6 mx-auto mb-2 text-muted-foreground group-hover:text-gold" />
                   <span className="text-[10px] font-bold uppercase text-muted-foreground group-hover:text-foreground">Town Hall</span>
                 </button>
-                <button className="p-4 rounded-lg bg-muted hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
+                <button className="p-4 rounded-lg bg-muted/30 hover:bg-gold/10 border border-border hover:border-gold/30 transition-all text-center group">
                   <TrendingUp className="w-6 h-6 mx-auto mb-2 text-muted-foreground group-hover:text-gold" />
                   <span className="text-[10px] font-bold uppercase text-muted-foreground group-hover:text-foreground">Analytics</span>
                 </button>
@@ -251,25 +305,5 @@ export default function MPDashboard() {
       
       <Footer />
     </div>
-  );
-}
-
-function Plus(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="M12 5v14" />
-    </svg>
   );
 }
