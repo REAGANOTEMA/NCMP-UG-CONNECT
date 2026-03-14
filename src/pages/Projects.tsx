@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Clock, Shield, TrendingUp, Filter, Search, CheckCircle2 } from "lucide-react";
+import { MapPin, Clock, Shield, TrendingUp, Filter, Search, CheckCircle2, DollarSign, Calendar, Building2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,11 @@ const mockProjects = [
     status: "In Progress",
     progress: 65,
     budget: "UGX 450B",
+    spent: "UGX 292B",
+    timeline: "2024 - 2027",
     ministry: "Ministry of Works & Transport",
-    priority: "High"
+    priority: "High",
+    objectives: ["Reduce traffic congestion", "Improve trade logistics", "Enhance regional connectivity"]
   },
   {
     id: 2,
@@ -24,8 +27,11 @@ const mockProjects = [
     status: "Completed",
     progress: 100,
     budget: "UGX 120B",
+    spent: "UGX 118.5B",
+    timeline: "2023 - 2025",
     ministry: "Ministry of Water & Environment",
-    priority: "Critical"
+    priority: "Critical",
+    objectives: ["Clean water for 500k residents", "Reduce water-borne diseases", "Industrial support"]
   },
   {
     id: 3,
@@ -34,8 +40,11 @@ const mockProjects = [
     status: "Planning",
     progress: 15,
     budget: "UGX 85B",
+    spent: "UGX 5B",
+    timeline: "2025 - 2028",
     ministry: "Ministry of Energy",
-    priority: "Medium"
+    priority: "Medium",
+    objectives: ["Power stability for factories", "Job creation", "Export promotion"]
   }
 ];
 
@@ -56,7 +65,7 @@ export default function Projects() {
           <h1 className="font-display text-4xl font-bold text-foreground mb-4">Project Tracker</h1>
           <p className="text-muted-foreground max-w-2xl">
             Real-time monitoring of government-funded development projects across all constituencies. 
-            Transparency in funding, progress, and delivery.
+            Transparency in funding, progress, and delivery powered by Nexterp Systems.
           </p>
         </motion.div>
 
@@ -79,49 +88,89 @@ export default function Projects() {
               transition={{ delay: i * 0.1 }}
               className="ncmp-card p-6 hover:border-gold/40 transition-all group"
             >
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="flex flex-col lg:flex-row gap-8">
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-3 mb-3">
                     <Badge className={project.status === 'Completed' ? 'bg-green-500/20 text-green-500' : 'bg-gold/20 text-gold'}>
                       {project.status}
                     </Badge>
                     <span className="text-xs text-muted-foreground flex items-center gap-1">
                       <MapPin className="w-3 h-3" /> {project.location}
                     </span>
+                    <span className="text-xs text-gold font-bold uppercase tracking-tighter">
+                      {project.priority} Priority
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground group-hover:text-gold transition-colors mb-2">
+                  
+                  <h3 className="text-2xl font-bold text-foreground group-hover:text-gold transition-colors mb-2">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground mb-4">{project.ministry}</p>
                   
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-gold/60" />
-                      <span className="text-xs font-bold text-foreground">{project.budget}</span>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                    <Building2 className="w-4 h-4" /> {project.ministry}
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                    <div className="p-3 rounded-lg bg-muted/50 border border-border">
+                      <div className="text-[10px] text-muted-foreground uppercase font-bold mb-1">Total Budget</div>
+                      <div className="text-sm font-bold text-foreground flex items-center gap-1">
+                        <DollarSign className="w-3 h-3 text-gold" /> {project.budget}
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-gold/60" />
-                      <span className="text-xs text-muted-foreground">Updated 2 days ago</span>
+                    <div className="p-3 rounded-lg bg-muted/50 border border-border">
+                      <div className="text-[10px] text-muted-foreground uppercase font-bold mb-1">Spent to Date</div>
+                      <div className="text-sm font-bold text-foreground flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-green-500" /> {project.spent}
+                      </div>
                     </div>
+                    <div className="p-3 rounded-lg bg-muted/50 border border-border">
+                      <div className="text-[10px] text-muted-foreground uppercase font-bold mb-1">Timeline</div>
+                      <div className="text-sm font-bold text-foreground flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-blue-500" /> {project.timeline}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-bold text-gold uppercase tracking-widest">Key Objectives</h4>
+                    <ul className="grid sm:grid-cols-2 gap-2">
+                      {project.objectives.map((obj, idx) => (
+                        <li key={idx} className="text-xs text-muted-foreground flex items-center gap-2">
+                          <div className="w-1 h-1 rounded-full bg-gold" /> {obj}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
 
-                <div className="w-full lg:w-64 space-y-2">
-                  <div className="flex justify-between text-xs font-bold mb-1">
-                    <span className="text-muted-foreground">Progress</span>
-                    <span className="text-gold">{project.progress}%</span>
+                <div className="w-full lg:w-72 space-y-4 flex flex-col justify-center">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs font-bold mb-1">
+                      <span className="text-muted-foreground uppercase">Implementation Progress</span>
+                      <span className="text-gold">{project.progress}%</span>
+                    </div>
+                    <div className="h-3 w-full bg-muted rounded-full overflow-hidden border border-border">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${project.progress}%` }}
+                        transition={{ duration: 1, delay: 0.5 }}
+                        className="h-full bg-gold shadow-[0_0_10px_rgba(255,215,0,0.3)]"
+                      />
+                    </div>
                   </div>
-                  <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${project.progress}%` }}
-                      transition={{ duration: 1, delay: 0.5 }}
-                      className="h-full bg-gold"
-                    />
+                  
+                  <div className="pt-4 space-y-2">
+                    <Button className="w-full bg-gold text-black font-bold">
+                      View Audit Trail
+                    </Button>
+                    <Button variant="outline" className="w-full border-gold/20 text-gold hover:bg-gold/10">
+                      Submit Feedback
+                    </Button>
                   </div>
-                  <Button variant="ghost" className="w-full text-xs text-gold hover:bg-gold/10 mt-4">
-                    View Full Audit Trail <TrendingUp className="w-3 h-3 ml-2" />
-                  </Button>
+                  
+                  <div className="text-[9px] text-center text-muted-foreground uppercase tracking-widest">
+                    Last Updated: 2 days ago
+                  </div>
                 </div>
               </div>
             </motion.div>
