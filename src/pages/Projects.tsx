@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Clock, Shield, TrendingUp, Filter, Search, CheckCircle2, DollarSign, Calendar, Building2 } from "lucide-react";
+import { MapPin, Clock, Shield, TrendingUp, Filter, Search, CheckCircle2, DollarSign, Calendar, Building2, FileText, ShieldCheck, Activity } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,8 @@ const mockProjects = [
     timeline: "2024 - 2027",
     ministry: "Ministry of Works & Transport",
     priority: "High",
-    objectives: ["Reduce traffic congestion", "Improve trade logistics", "Enhance regional connectivity"]
+    objectives: ["Reduce traffic congestion", "Improve trade logistics", "Enhance regional connectivity"],
+    funding: { source: "Government of Uganda / EXIM Bank", type: "Loan & Domestic Revenue" }
   },
   {
     id: 2,
@@ -31,7 +32,8 @@ const mockProjects = [
     timeline: "2023 - 2025",
     ministry: "Ministry of Water & Environment",
     priority: "Critical",
-    objectives: ["Clean water for 500k residents", "Reduce water-borne diseases", "Industrial support"]
+    objectives: ["Clean water for 500k residents", "Reduce water-borne diseases", "Industrial support"],
+    funding: { source: "World Bank / GoU", type: "Grant & Domestic Revenue" }
   },
   {
     id: 3,
@@ -44,7 +46,8 @@ const mockProjects = [
     timeline: "2025 - 2028",
     ministry: "Ministry of Energy",
     priority: "Medium",
-    objectives: ["Power stability for factories", "Job creation", "Export promotion"]
+    objectives: ["Power stability for factories", "Job creation", "Export promotion"],
+    funding: { source: "Domestic Revenue", type: "Direct Funding" }
   }
 ];
 
@@ -131,15 +134,28 @@ export default function Projects() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <h4 className="text-xs font-bold text-gold uppercase tracking-widest">Key Objectives</h4>
-                    <ul className="grid sm:grid-cols-2 gap-2">
-                      {project.objectives.map((obj, idx) => (
-                        <li key={idx} className="text-xs text-muted-foreground flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-gold" /> {obj}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-bold text-gold uppercase tracking-widest flex items-center gap-2">
+                        <Activity className="w-3 h-3" /> Key Objectives
+                      </h4>
+                      <ul className="space-y-1.5">
+                        {project.objectives.map((obj, idx) => (
+                          <li key={idx} className="text-xs text-muted-foreground flex items-center gap-2">
+                            <div className="w-1 h-1 rounded-full bg-gold" /> {obj}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-bold text-gold uppercase tracking-widest flex items-center gap-2">
+                        <ShieldCheck className="w-3 h-3" /> Funding Source
+                      </h4>
+                      <div className="p-3 rounded-lg bg-gold/5 border border-gold/10">
+                        <p className="text-[10px] font-bold text-foreground mb-1">{project.funding.source}</p>
+                        <p className="text-[9px] text-muted-foreground uppercase">{project.funding.type}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -160,8 +176,8 @@ export default function Projects() {
                   </div>
                   
                   <div className="pt-4 space-y-2">
-                    <Button className="w-full bg-gold text-black font-bold">
-                      View Audit Trail
+                    <Button className="w-full bg-gold text-black font-bold gap-2">
+                      <FileText className="w-4 h-4" /> View Audit Trail
                     </Button>
                     <Button variant="outline" className="w-full border-gold/20 text-gold hover:bg-gold/10">
                       Submit Feedback
