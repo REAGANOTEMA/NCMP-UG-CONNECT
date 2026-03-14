@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Bell, MessageSquare, ChevronDown, LogOut, User, LayoutDashboard, Search, Home, Users, Globe } from "lucide-react";
+import { Menu, X, Bell, MessageSquare, ChevronDown, LogOut, User, LayoutDashboard, Search, Home, Users, Globe, FileText, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "../context/AuthContext";
@@ -51,13 +51,14 @@ export default function Navbar() {
           {[
             { icon: Home, href: "/feed", label: "Home" },
             { icon: Users, href: "/parliament/mps", label: "MPs" },
-            { icon: Globe, href: "/constituencies", label: "Regions" },
+            { icon: MessageCircle, href: "/townhall", label: "Town Hall" },
+            { icon: FileText, href: "/petitions", label: "Petitions" },
             { icon: LayoutDashboard, href: isMP ? "/mp/dashboard" : "/analytics", label: "Stats" },
           ].map((item) => (
             <Link 
               key={item.href} 
               to={item.href}
-              className={`px-8 py-2 rounded-lg transition-all relative group ${
+              className={`px-6 py-2 rounded-lg transition-all relative group ${
                 location.pathname === item.href ? "text-gold" : "text-muted-foreground hover:bg-gold/5"
               }`}
             >
