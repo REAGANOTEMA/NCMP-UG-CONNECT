@@ -3,12 +3,14 @@ import {
   Shield, Users, MapPin, Activity, 
   FileText, Bell, Search, Filter, 
   TrendingUp, CheckCircle2, AlertTriangle,
-  BarChart3, Globe, Briefcase, ArrowUpRight
+  BarChart3, Globe, Briefcase, ArrowUpRight,
+  ThumbsUp, ThumbsDown, Radio
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { allMPs, REGIONS } from "@/data/ugandaData";
 import { useAuth } from "@/context/AuthContext";
 
@@ -66,8 +68,42 @@ export default function OversightDashboard() {
         </div>
 
         <div className="grid lg:grid-cols-12 gap-8">
-          {/* Regional Performance */}
+          {/* Main Content Area */}
           <div className="lg:col-span-8 space-y-6">
+            {/* Live Public Pulse Monitor */}
+            <div className="ncmp-card p-6 border-red-600/20 bg-red-600/5">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-bold text-foreground flex items-center gap-2">
+                  <Radio className="w-4 h-4 text-red-600 animate-pulse" /> Live Public Pulse: Plenary Session
+                </h3>
+                <Badge className="bg-red-600 text-white">12.4k Citizens Reacting</Badge>
+              </div>
+              
+              <div className="grid sm:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <div className="flex justify-between text-xs font-bold uppercase">
+                    <span className="text-green-500 flex items-center gap-2"><ThumbsUp className="w-3 h-3" /> Support</span>
+                    <span className="text-foreground">84%</span>
+                  </div>
+                  <Progress value={84} className="h-2 bg-muted" />
+                  
+                  <div className="flex justify-between text-xs font-bold uppercase">
+                    <span className="text-red-500 flex items-center gap-2"><ThumbsDown className="w-3 h-3" /> Oppose</span>
+                    <span className="text-foreground">16%</span>
+                  </div>
+                  <Progress value={16} className="h-2 bg-muted" />
+                </div>
+                
+                <div className="p-4 rounded-lg bg-black/40 border border-white/5">
+                  <h4 className="text-[10px] font-bold text-gold uppercase tracking-widest mb-3">Top Public Concern</h4>
+                  <p className="text-sm text-foreground font-medium mb-2">"Budget allocation for rural health centers is insufficient."</p>
+                  <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                    <TrendingUp className="w-3 h-3 text-gold" /> Trending in 14 Districts
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="ncmp-card p-6">
               <h3 className="font-bold text-foreground mb-6 flex items-center gap-2">
                 <Globe className="w-4 h-4 text-gold" /> Regional Engagement Heatmap
@@ -90,37 +126,6 @@ export default function OversightDashboard() {
                   </div>
                 ))}
               </div>
-            </div>
-
-            {/* MP Activity Monitor */}
-            <div className="ncmp-card p-6">
-              <h3 className="font-bold text-foreground mb-6 flex items-center gap-2">
-                <Activity className="w-4 h-4 text-gold" /> Real-Time MP Activity Monitor
-              </h3>
-              <div className="space-y-4">
-                {allMPs.slice(0, 5).map(mp => (
-                  <div key={mp.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border hover:border-gold/20 transition-all">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center text-xs font-bold text-gold">
-                        {mp.name[0]}
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground">{mp.name}</p>
-                        <p className="text-[10px] text-muted-foreground uppercase">{mp.constituency}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Badge className="bg-green-500/10 text-green-500 border-none">ONLINE</Badge>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <ArrowUpRight className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <Button variant="ghost" className="w-full mt-4 text-xs text-gold hover:bg-gold/10">
-                View Full Member Registry (529 MPs)
-              </Button>
             </div>
           </div>
 
