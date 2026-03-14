@@ -70,9 +70,19 @@ export default function Login() {
     <div className="min-h-screen bg-background flex">
       <div className="flex-1 flex flex-col justify-center px-8 sm:px-16 py-12 max-w-lg mx-auto w-full">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <Link to="/" className="flex items-center gap-3 mb-10">
-            <img src="/ncmp-logo.png" alt="NCMP Logo" className="w-10 h-10" />
-            <div className="text-gold font-display font-bold text-xl tracking-tight">NCMP Uganda</div>
+          <Link to="/" className="flex items-center gap-3 mb-10 group">
+            <div className="relative w-12 h-12 flex items-center justify-center rounded-xl bg-transparent">
+              <img 
+                src="/ncmp-logo.png" 
+                alt="NCMP Logo" 
+                className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(255,215,0,0.5)] group-hover:scale-110 transition-transform" 
+              />
+              <div className="absolute inset-0 bg-gold/5 blur-xl rounded-full -z-10" />
+            </div>
+            <div className="flex flex-col">
+              <div className="text-gold font-display font-bold text-2xl tracking-tight">NCMP Uganda</div>
+              <div className="text-[10px] text-muted-foreground font-bold tracking-[0.3em] uppercase">National Platform</div>
+            </div>
           </Link>
 
           <h1 className="font-display text-4xl font-bold text-foreground mb-2">Secure Sign In</h1>

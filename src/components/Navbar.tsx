@@ -30,18 +30,29 @@ export default function Navbar() {
         {/* Left: Logo & Search */}
         <div className="flex items-center gap-3 flex-1">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="relative">
-              <img src="/ncmp-logo.png" alt="NCMP Logo" className="h-9 w-9 drop-shadow-[0_0_8px_rgba(255,215,0,0.4)] group-hover:scale-110 transition-transform" />
-              <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full -z-10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="relative flex items-center justify-center">
+              {/* Logo Container with perfect background matching */}
+              <div className="relative w-10 h-10 flex items-center justify-center rounded-lg overflow-hidden bg-transparent">
+                <img 
+                  src="/ncmp-logo.png" 
+                  alt="NCMP Logo" 
+                  className="h-8 w-8 object-contain drop-shadow-[0_0_12px_rgba(255,215,0,0.6)] group-hover:scale-110 transition-transform duration-300" 
+                />
+              </div>
+              {/* Subtle ambient glow behind logo */}
+              <div className="absolute inset-0 bg-gold/10 blur-2xl rounded-full -z-10 opacity-50 group-hover:opacity-100 transition-opacity" />
             </div>
-            <span className="text-gold font-display font-bold text-xl hidden sm:block">NCMP</span>
+            <div className="flex flex-col leading-none">
+              <span className="text-gold font-display font-bold text-xl tracking-tight hidden sm:block">NCMP</span>
+              <span className="text-[8px] text-muted-foreground font-bold tracking-[0.2em] uppercase hidden sm:block">Uganda</span>
+            </div>
           </Link>
           
-          <div className="relative max-w-md w-full hidden md:block">
+          <div className="relative max-w-md w-full hidden md:block ml-4">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input 
               placeholder="Search Parliament, MPs, or Issues..." 
-              className="bg-muted/50 border-none h-9 pl-10 focus-visible:ring-gold/50 w-full rounded-full"
+              className="bg-muted/30 border-none h-9 pl-10 focus-visible:ring-gold/30 w-full rounded-full text-sm"
             />
           </div>
         </div>
@@ -66,7 +77,7 @@ export default function Navbar() {
               {location.pathname === item.href && (
                 <motion.div layoutId="nav-active" className="absolute bottom-0 left-0 right-0 h-1 bg-gold rounded-t-full" />
               )}
-              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gold text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-gold text-black text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
                 {item.label}
               </span>
             </Link>
@@ -78,11 +89,11 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               <div className="flex items-center gap-1 mr-2">
-                <Button variant="ghost" size="icon" className="rounded-full bg-muted/50 hover:bg-gold/10 text-muted-foreground hover:text-gold">
+                <Button variant="ghost" size="icon" className="rounded-full bg-muted/30 hover:bg-gold/10 text-muted-foreground hover:text-gold">
                   <Bell className="w-5 h-5" />
                 </Button>
                 <Link to="/messages">
-                  <Button variant="ghost" size="icon" className="rounded-full bg-muted/50 hover:bg-gold/10 text-muted-foreground hover:text-gold">
+                  <Button variant="ghost" size="icon" className="rounded-full bg-muted/30 hover:bg-gold/10 text-muted-foreground hover:text-gold">
                     <MessageSquare className="w-5 h-5" />
                   </Button>
                 </Link>
@@ -124,8 +135,8 @@ export default function Navbar() {
             </>
           ) : (
             <div className="flex items-center gap-2">
-              <Link to="/login"><Button variant="ghost" className="text-gold">Sign In</Button></Link>
-              <Link to="/register"><Button className="bg-gold text-black font-bold">Join NCMP</Button></Link>
+              <Link to="/login"><Button variant="ghost" className="text-gold hover:bg-gold/5">Sign In</Button></Link>
+              <Link to="/register"><Button className="bg-gold text-black font-bold hover:bg-gold/90">Join NCMP</Button></Link>
             </div>
           )}
         </div>
