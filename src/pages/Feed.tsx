@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/context/AuthContext";
+import { useNotifications } from "@/context/NotificationContext";
 
 const mockPosts = [
   {
@@ -52,7 +53,19 @@ const stories = [
 
 export default function Feed() {
   const { user } = useAuth();
+  const { sendPostAlert } = useNotifications();
   const [postContent, setPostContent] = useState("");
+
+  const handlePost = () => {
+    if (!postContent.trim()) return;
+    
+    // If official, trigger national notification
+    if (['mp', 'speaker', 'clerk', 'official'].includes(user?.role || '')) {
+      sendPostAlert(`${user?.firstName} ${user?.lastName}`, postContent);
+    }
+    
+    setPostContent("");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -119,12 +132,12 @@ export default function Feed() {
               <div className="w-10 h-10 rounded-full bg-gold/20 flex-shrink-0 flex items-center justify-center font-bold text-gold">
                 {user?.firstName[0]}
               </div>
-              <button 
-                onClick={() => setPostContent("")}
-                className="flex-1 bg-muted/50 hover:bg-muted rounded-full px-4 text-left text-muted-foreground text-sm transition-colors"
-              >
-                What's happening in your constituency, {user?.firstName}?
-              </button>
+              <Textarea 
+                value={postContent}
+                onChange={(e) => setPostContent(e.target.value)}
+                placeholder={`What's happening in your constituency, ${user?.firstName}?`}
+                className="flex-1 bg-muted/50 hover:bg-muted rounded-xl border-none text-sm transition-colors min-h-[80px] resize-none"
+              />
             </div>
             <div className="flex items-center justify-between pt-3 border-t border-border">
               <div className="flex gap-1">
@@ -138,6 +151,13 @@ export default function Feed() {
                   <FileText className="w-5 h-5 text-gold" /> <span className="hidden sm:inline">Issue</span>
                 </Button>
               </div>
+              <Button 
+                onClick={handlePost}
+                disabled={!postContent.trim()}
+                className="bg-gold text-black font-bold rounded-full px-6"
+              >
+                Post
+              </Button>
             </div>
           </div>
 

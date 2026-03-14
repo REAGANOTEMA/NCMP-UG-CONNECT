@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
-import { Calendar, Clock, Radio, PlayCircle, FileText, ExternalLink, Youtube } from "lucide-react";
+import { Calendar, Clock, Radio, PlayCircle, FileText, ExternalLink, Youtube, ShieldAlert } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/context/AuthContext";
+import { useNotifications } from "@/context/NotificationContext";
 
 const sessions = [
   {
@@ -30,17 +32,34 @@ const sessions = [
 ];
 
 export default function Sessions() {
+  const { user } = useAuth();
+  const { sendLiveAlert } = useNotifications();
   const youtubeChannelUrl = "https://www.youtube.com/@parliamentofuganda7837";
+
+  const isOfficial = user?.role === 'speaker' || user?.role === 'clerk';
+
+  const handleGoLive = () => {
+    sendLiveAlert("Plenary Session: National Budget Debate 2026/27");
+  };
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-24 pb-12 px-4 sm:px-6 max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
-          <div className="text-gold text-xs font-semibold tracking-widest uppercase mb-2">
-            🎙️ Live from Parliament House
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-gold text-xs font-semibold tracking-widest uppercase mb-2">
+                🎙️ Live from Parliament House
+              </div>
+              <h1 className="font-display text-4xl font-bold text-foreground mb-4">Parliamentary Sessions</h1>
+            </div>
+            {isOfficial && (
+              <Button onClick={handleGoLive} className="bg-red-600 hover:bg-red-700 text-white font-bold gap-2">
+                <ShieldAlert className="w-4 h-4" /> Trigger National Live Alert
+              </Button>
+            )}
           </div>
-          <h1 className="font-display text-4xl font-bold text-foreground mb-4">Parliamentary Sessions</h1>
           <p className="text-muted-foreground max-w-2xl">
             Watch live broadcasts, view the Order Paper, and access Hansard records. All live sessions are streamed via the official 
             <a href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer" className="text-gold font-bold hover:underline ml-1">
