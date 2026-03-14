@@ -2,28 +2,38 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-// Vite Configuration for NCMP – Uganda
+// NCMP Uganda Connect - Vite Config
 export default defineConfig({
+  plugins: [react()],
+
   server: {
-    host: true, // allows access from network devices
+    host: true,
     port: 8080,
+    strictPort: true,
+
     hmr: {
-      overlay: false,
-    },
+      overlay: false
+    }
   },
 
-  plugins: [
-    react()
-  ],
+  preview: {
+    host: true,
+    port: 8080
+  },
 
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+      "@": path.resolve(__dirname, "./src")
+    }
   },
 
   build: {
     outDir: "dist",
     sourcemap: false,
+    chunkSizeWarningLimit: 1000
   },
+
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version)
+  }
 });
