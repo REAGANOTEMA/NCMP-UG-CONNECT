@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { 
   ShieldCheck, MapPin, Users, MessageSquare, Phone, 
@@ -10,10 +10,14 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { allMPs, PARTIES } from "@/data/ugandaData";
+import { useState } from "react";
+import CallInterface from "@/components/CallInterface";
 
 export default function MPProfile() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const mp = allMPs.find(m => m.id === id);
+  const [callState, setCallState] = useState<{ isOpen: boolean; type: 'voice' | 'video' }>({ isOpen: false, type: 'voice' });
 
   if (!mp) return <div className="pt-32 text-center">MP Not Found</div>;
 
@@ -45,7 +49,7 @@ export default function MPProfile() {
               <div className="absolute top-0 left-0 w-full h-2" style={{ backgroundColor: partyInfo.color }} />
               
               <div className="w-32 h-32 rounded-full bg-gold/10 border-4 border-gold/20 mx-auto mb-6 flex items-center justify-center text-4xl font-bold text-gold">
-                {mp.name.split(" ").slice(-1)[0][0]}
+                {mp.name[0]}
               </div>
               
               <div className="flex items-center justify-center gap-2 mb-2">
@@ -62,12 +66,17 @@ export default function MPProfile() {
               </div>
 
               <div className="grid grid-cols-2 gap-4 pt-6 border-t border-border">
-                <Link to="/messages" className="w-full">
-                  <Button className="w-full bg-gold text-black hover:bg-gold/90 font-bold">
-                    <MessageSquare className="w-4 h-4 mr-2" /> Message
-                  </Button>
-                </Link>
-                <Button variant="outline" className="w-full border-gold/30 text-gold hover:bg-gold/10">
+                <Button 
+                  onClick={() => navigate("/messages")}
+                  className="w-full bg-gold text-black hover:bg-gold/90 font-bold"
+                >
+                  <MessageSquare className="w-4 h-4 mr-2" /> Message
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setCallState({ isOpen: true, type: 'voice' })}
+                  className="w-full border-gold/30 text-gold hover:bg-gold/10"
+                >
                   <Phone className="w-4 h-4 mr-2" /> Call
                 </Button>
               </div>
@@ -90,9 +99,6 @@ export default function MPProfile() {
                   </div>
                 ))}
               </div>
-              <Button variant="outline" className="w-full mt-6 border-border text-xs h-8">
-                Contact Office
-              </Button>
             </div>
           </div>
 
@@ -170,6 +176,12 @@ export default function MPProfile() {
         </div>
       </div>
 
+      <CallInterface 
+        isOpen={callState.isOpen} 
+        onClose={() => setCallState({ ...callState, isOpen: false })} 
+        callerName={mp.name}
+        type={callState.type}
+      />
       <Footer />
     </div>
   );
