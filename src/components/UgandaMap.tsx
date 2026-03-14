@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { REGIONS } from "@/data/ugandaData";
 
@@ -30,7 +30,7 @@ export default function UgandaMap({ onRegionSelect, activeRegion }: UgandaMapPro
         transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
       />
 
-      <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_30px_rgba(255,215,0,0.1)]">
+      <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_0_30px_rgba(255,215,0,0.15)]">
         {regions.map((region) => (
           <motion.path
             key={region.id}
@@ -73,5 +73,3 @@ export default function UgandaMap({ onRegionSelect, activeRegion }: UgandaMapPro
     </div>
   );
 }
-
-import { AnimatePresence } from "framer-motion";
