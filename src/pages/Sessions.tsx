@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Calendar, Clock, Radio, PlayCircle, FileText } from "lucide-react";
+import { Calendar, Clock, Radio, PlayCircle, FileText, ExternalLink, Youtube } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ const sessions = [
     date: "Today, March 15, 2026",
     time: "02:00 PM",
     status: "Live",
-    description: "The House is debating the proposed budget allocations for the next financial year."
+    description: "The House is debating the proposed budget allocations for the next financial year. Watch live on the official YouTube channel."
   },
   {
     title: "Prime Minister's Question Time",
@@ -30,6 +30,8 @@ const sessions = [
 ];
 
 export default function Sessions() {
+  const youtubeChannelUrl = "https://www.youtube.com/@parliamentofuganda7837";
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -40,11 +42,55 @@ export default function Sessions() {
           </div>
           <h1 className="font-display text-4xl font-bold text-foreground mb-4">Parliamentary Sessions</h1>
           <p className="text-muted-foreground max-w-2xl">
-            Watch live broadcasts, view the Order Paper, and access Hansard records of all parliamentary proceedings.
+            Watch live broadcasts, view the Order Paper, and access Hansard records. All live sessions are streamed via the official 
+            <a href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer" className="text-gold font-bold hover:underline ml-1">
+              Parliament of Uganda YouTube Channel
+            </a>.
           </p>
         </motion.div>
 
+        {/* Live Stream Highlight */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="ncmp-card p-8 mb-12 border-red-600/30 bg-red-600/5 relative overflow-hidden"
+        >
+          <div className="absolute top-4 right-4">
+            <Badge className="bg-red-600 text-white animate-pulse px-3 py-1">
+              <Radio className="w-3 h-3 mr-2" /> LIVE NOW
+            </Badge>
+          </div>
+          
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="w-full md:w-1/3 aspect-video bg-black rounded-lg flex items-center justify-center border border-white/10 group cursor-pointer relative overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1526470498-9ae73c66a992?q=80&w=2070" 
+                alt="Parliament Session" 
+                className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700"
+              />
+              <Youtube className="w-16 h-16 text-red-600 relative z-10 group-hover:scale-125 transition-transform" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold text-foreground mb-3">Plenary Session: 11th Parliament</h2>
+              <p className="text-muted-foreground mb-6">
+                The House is currently in session. Join thousands of Ugandans watching the live broadcast on our official digital channel.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 h-12">
+                    <Youtube className="w-5 h-5 mr-2" /> Watch on YouTube
+                  </Button>
+                </a>
+                <Button variant="outline" className="border-white/10 text-muted-foreground h-12">
+                  <FileText className="w-4 h-4 mr-2" /> View Order Paper
+                </Button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         <div className="space-y-6">
+          <h3 className="text-sm font-bold text-gold uppercase tracking-widest mb-4">Recent & Upcoming Sessions</h3>
           {sessions.map((s, i) => (
             <motion.div 
               key={s.title}
@@ -79,15 +125,17 @@ export default function Sessions() {
                 
                 <div className="flex flex-col sm:flex-row gap-3">
                   {s.status === 'Live' ? (
-                    <Button className="bg-red-600 hover:bg-red-700 text-white font-bold gap-2">
-                      <PlayCircle className="w-4 h-4" /> Watch Live
-                    </Button>
+                    <a href={youtubeChannelUrl} target="_blank" rel="noopener noreferrer">
+                      <Button className="bg-red-600 hover:bg-red-700 text-white font-bold gap-2 w-full sm:w-auto">
+                        <PlayCircle className="w-4 h-4" /> Watch Live
+                      </Button>
+                    </a>
                   ) : s.status === 'Upcoming' ? (
-                    <Button className="bg-gold text-black font-bold gap-2">
+                    <Button className="bg-gold text-black font-bold gap-2 w-full sm:w-auto">
                       <FileText className="w-4 h-4" /> View Order Paper
                     </Button>
                   ) : (
-                    <Button variant="outline" className="border-border text-muted-foreground gap-2">
+                    <Button variant="outline" className="border-border text-muted-foreground gap-2 w-full sm:w-auto">
                       <FileText className="w-4 h-4" /> View Hansard
                     </Button>
                   )}
