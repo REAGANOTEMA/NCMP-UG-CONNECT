@@ -1,3 +1,4 @@
+// src/services/firebase.ts
 import { initializeApp } from "firebase/app";
 import {
   getMessaging,
@@ -7,6 +8,7 @@ import {
   Messaging
 } from "firebase/messaging";
 
+// Firebase configuration from Vite environment variables
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -17,30 +19,35 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
+// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 
 let messaging: Messaging | null = null;
 
-// Check if messaging is supported (important for Safari / SSR)
-export const initMessaging = async () => {
+/**
+ * Initialize Firebase Cloud Messaging (only if supported)
+ */
+export const initMessaging = async (): Promise<void> => {
   const supported = await isSupported();
   if (supported) {
     messaging = getMessaging(app);
+    console.log("✅ Firebase Messaging initialized");
   } else {
     console.warn("⚠️ Firebase Messaging not supported in this browser");
   }
 };
 
+/**
+ * Request FCM token from user browser
+ */
 export const requestFirebaseToken = async (): Promise<string | null> => {
+  if (!messaging) {
+    console.warn("⚠️ Messaging not initialized");
+    return null;
+  }
+
   try {
-    if (!messaging) {
-      console.warn("⚠️ Messaging not initialized");
-      return null;
-    }
-
     const permission = await Notification.requestPermission();
-
     if (permission !== "granted") {
       console.warn("⚠️ Notification permission denied");
       return null;
@@ -64,7 +71,9 @@ export const requestFirebaseToken = async (): Promise<string | null> => {
   }
 };
 
-// Foreground notification listener
+/**
+ * Listen for foreground messages
+ */
 export const onMessageListener = (callback: (payload: any) => void) => {
   if (!messaging) return;
 
@@ -74,4 +83,5 @@ export const onMessageListener = (callback: (payload: any) => void) => {
   });
 };
 
+// Default export (Firebase App instance)
 export default app;
