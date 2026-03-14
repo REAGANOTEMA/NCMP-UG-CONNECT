@@ -26,32 +26,39 @@ const footerLinks = {
 export default function Footer() {
   return (
     <footer className="relative bg-black border-t border-white/5 overflow-hidden">
-      {/* National Crane Animation Layer */}
+      {/* National Crane Animation Layer - Flying Forward (Right) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden h-32">
         <motion.div
           className="absolute top-8"
-          initial={{ x: "-10%", opacity: 0 }}
+          initial={{ x: "-20%", opacity: 0 }}
           animate={{ 
-            x: "110%", 
+            x: "120%", 
             opacity: [0, 1, 1, 0],
-            y: [0, -10, 5, -15, 0] 
+            y: [0, -15, 10, -20, 0] // Natural vertical oscillation
           }}
           transition={{ 
-            x: { duration: 25, repeat: Infinity, ease: "linear" },
-            opacity: { duration: 25, repeat: Infinity, times: [0, 0.1, 0.9, 1] },
-            y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+            x: { duration: 20, repeat: Infinity, ease: "linear" },
+            opacity: { duration: 20, repeat: Infinity, times: [0, 0.1, 0.9, 1] },
+            y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
           }}
         >
           <div className="relative">
             <motion.img
               src={crownedCrane}
               alt="Grey Crowned Crane"
-              className="h-16 w-auto object-contain drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]"
-              animate={{ scaleY: [1, 0.8, 1] }}
-              transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+              className="h-16 w-auto object-contain drop-shadow-[0_0_15px_rgba(255,215,0,0.4)]"
+              style={{ scaleX: -1 }} // Flip image to face right (forward)
+              animate={{ 
+                scaleY: [1, 0.7, 1], // Realistic wing flap compression
+                rotate: [-2, 2, -2]   // Slight tilt during flight
+              }}
+              transition={{ 
+                scaleY: { duration: 0.6, repeat: Infinity, ease: "easeInOut" },
+                rotate: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+              }}
             />
-            {/* Subtle wind trail */}
-            <div className="absolute -left-4 top-1/2 w-8 h-px bg-gradient-to-r from-transparent to-gold/20 blur-sm" />
+            {/* Subtle wind trail for speed effect */}
+            <div className="absolute -left-8 top-1/2 w-12 h-[1px] bg-gradient-to-r from-transparent via-gold/20 to-transparent blur-sm" />
           </div>
         </motion.div>
       </div>

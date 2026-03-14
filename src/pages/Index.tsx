@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { 
-  Shield, ArrowRight, ChevronRight 
+  Shield, ArrowRight, ChevronRight, Award, Landmark, Scale
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MPProfileCard from "@/components/MPProfileCard";
 import HeroSlider from "@/components/HeroSlider";
+import NationalSeal from "@/components/NationalSeal";
 import { nationalOfficials, allMPs } from "@/data/ugandaData";
 
 export default function Index() {
@@ -79,6 +80,60 @@ export default function Index() {
           <div className="flex-1 bg-black" />
           <div className="flex-1 bg-gold" />
           <div className="flex-1 bg-red-600" />
+        </div>
+      </section>
+
+      {/* ===== NATIONAL AUTHORITY SECTION (Rolling Machine) ===== */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gold/[0.02] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="flex items-center gap-2 text-gold text-xs font-bold tracking-[0.3em] uppercase mb-6">
+              <Landmark className="w-4 h-4" /> Sovereign Authority
+            </div>
+            <h2 className="font-display text-5xl font-bold text-white mb-8 leading-tight">
+              The Seal of <br />
+              <span className="text-gold">National Integrity</span>
+            </h2>
+            <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
+              NCMP operates under the highest standards of national security and digital sovereignty. 
+              Our platform is the official bridge between the Republic's leadership and its citizens, 
+              ensuring every voice is heard within the framework of our constitution.
+            </p>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                  <Scale className="text-gold w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-1">Constitutional</h4>
+                  <p className="text-xs text-muted-foreground">Aligned with national laws.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                  <Award className="text-gold w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-1">Verified</h4>
+                  <p className="text-xs text-muted-foreground">Official government data.</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <NationalSeal />
+          </motion.div>
         </div>
       </section>
 
