@@ -6,34 +6,31 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
 
-  server: {
-    host: true,
-    port: 8080,
-    strictPort: true,
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"), // @ => src
+    },
+  },
 
-    hmr: {
-      overlay: false
-    }
+  server: {
+    host: true,       // network access
+    port: 8080,
+    strictPort: true, // fail if port is in use
+    hmr: { overlay: false },
   },
 
   preview: {
     host: true,
-    port: 8080
-  },
-
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
+    port: 8080,
   },
 
   build: {
-    outDir: "dist",
+    outDir: "dist",            // production output
     sourcemap: false,
-    chunkSizeWarningLimit: 1000
+    chunkSizeWarningLimit: 1000,
   },
 
   define: {
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version)
-  }
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
+  },
 });

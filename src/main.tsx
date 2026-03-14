@@ -29,6 +29,7 @@ async function initializeServices() {
 
     // Initialize Firebase messaging
     await initMessaging();
+    console.log("✅ Services initialized successfully");
   } catch (error) {
     console.error("❌ Service initialization failed:", error);
   }
