@@ -1,24 +1,35 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "noImplicitAny": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx", // Use the new JSX transform for React 17+
+    "lib": [
+      "ES2020", 
+      "DOM", 
+      "DOM.Iterable"
+    ],
+    "module": "ESNext", // For modern module resolution
+    "moduleResolution": "bundler", // For compatibility with bundlers like Vite
+    "noEmit": true, // Don't emit any output files (Vite handles this)
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": false, // Allows 'any' type if not explicitly set
+    "noUnusedLocals": false, // Disable unused local variable checks
+    "noUnusedParameters": false, // Disable unused parameter checks
+    "skipLibCheck": true, // Skip type checking for libraries
+    "strict": false, // Turn off strict mode for looser type checking
+    "target": "ES2020", // Compiles to modern JavaScript
+    "types": [
+      "vitest/globals" // For Vitest globals
+    ],
+    "useDefineForClassFields": true, // Matches the class fields spec
     "paths": {
       "@/*": [
         "./src/*"
       ]
-    },
-    "skipLibCheck": true,
-    "strictNullChecks": false
-  },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
     }
+  },
+  "include": [
+    "src/**/*" // Include all TypeScript files inside the src directory
   ]
 }

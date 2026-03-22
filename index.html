@@ -1,43 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta Tags for Charset and Viewport -->
     <meta charset="UTF-8" />
-
-    <!-- Responsive viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <!-- Application Title -->
     <title>NCMP – National Constituency Management Platform</title>
 
-    <!-- Meta Description -->
+    <!-- Meta Description for SEO -->
     <meta
       name="description"
       content="National Constituency Management Platform (NCMP – Uganda). A digital civic infrastructure connecting citizens, Members of Parliament, and national leadership for transparent governance and civic engagement."
     />
 
-    <!-- Author -->
+    <!-- Author and Credits -->
     <meta name="author" content="NCMP – Uganda | Design Credit: Reagan" />
 
-    <!-- Favicon -->
+    <!-- Favicon for the site -->
     <link rel="icon" type="image/png" href="/ncmp-logo.png" />
 
-    <!-- Open Graph (Social Sharing) -->
+    <!-- Open Graph Meta Tags for Social Sharing -->
     <meta property="og:title" content="NCMP – National Constituency Management Platform" />
-    <meta property="og:description" content="Uganda’s national digital civic infrastructure connecting citizens, Parliament, and leadership." />
+    <meta
+      property="og:description"
+      content="Uganda’s national digital civic infrastructure connecting citizens, Parliament, and leadership."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="/assets/ncmp-logo.png" />
+    <meta property="og:url" content="https://your-website-url.com" /> <!-- Update with your site URL -->
 
-    <!-- Twitter Card -->
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="NCMP – National Constituency Management Platform" />
     <meta name="twitter:description" content="Connecting Citizens, Parliament, and National Leadership." />
     <meta name="twitter:image" content="/assets/ncmp-logo.png" />
+
+    <!-- Web Manifest for Progressive Web App (PWA) -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Preconnect to Improve Performance -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://www.google.com" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet for Global CSS (Can be customized) -->
+    <link rel="stylesheet" href="/src/styles.css" />
+
   </head>
 
   <body>
     <div id="root"></div>
 
-    <!-- React Entry -->
+    <!-- React Entry Point (TypeScript JSX Entry) -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Inline Critical CSS (Optional) to Minimize Render-blocking -->
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+      }
+    </style>
   </body>
 </html>
